@@ -544,6 +544,17 @@
                 padding: 12px 25px;
                 font-size: 0.9rem;
             }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
         }
     </style>
 </head>
@@ -1114,6 +1125,7 @@
         // 显示问题
         function showQuestion(index) {
             const question = questions[index];
+            const isLastQuestion = index === questions.length - 1;
             const questionHtml = `
                 <div class="question-card active">
                     <div class="question-header">
@@ -1128,6 +1140,13 @@
                             </div>
                         `).join('')}
                     </div>
+                    ${isLastQuestion ? `
+                        <div style="margin-top: 30px; text-align: center;">
+                            <button class="btn btn-primary" onclick="submitQuiz()" id="submitBtn" style="display: none;">
+                                查看测试结果
+                            </button>
+                        </div>
+                    ` : ''}
                 </div>
             `;
 
@@ -1171,10 +1190,19 @@
                 if (currentQuestion < questions.length - 1) {
                     nextQuestion();
                 } else {
-                    // 如果是最后一题，显示结果
-                    showResults();
+                    // 如果是最后一题，显示提交按钮
+                    const submitBtn = document.getElementById('submitBtn');
+                    if (submitBtn) {
+                        submitBtn.style.display = 'inline-block';
+                        submitBtn.style.animation = 'fadeIn 0.5s ease-in';
+                    }
                 }
             }, 300); // 300ms延迟，让用户看到选择效果
+        }
+
+        // 提交测试
+        function submitQuiz() {
+            showResults();
         }
 
         // 下一题
