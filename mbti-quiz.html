@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MBTI人格类型测试</title>
+    <title>专业MBTI人格测试 - 48题完整版</title>
     <style>
         * {
             margin: 0;
@@ -149,6 +149,95 @@
             margin-left: 40px;
             color: #333;
             line-height: 1.5;
+        }
+
+        /* 6点量表样式 */
+        .likert-scale {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .likert-option {
+            flex: 1;
+            min-width: 80px;
+            text-align: center;
+            padding: 15px 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+            position: relative;
+        }
+
+        .likert-option:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .likert-option.selected {
+            border-color: #667eea;
+            background: linear-gradient(45deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        }
+
+        .likert-value {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .likert-text {
+            font-size: 0.9em;
+            color: #666;
+            line-height: 1.3;
+        }
+
+        .likert-option.selected .likert-value {
+            color: #667eea;
+        }
+
+        .likert-option.selected .likert-text {
+            color: #333;
+            font-weight: 600;
+        }
+
+        /* 维度指示器 */
+        .dimension-indicator {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-left: 10px;
+            color: white;
+        }
+
+        .dimension-E { background: #FF6B6B; }
+        .dimension-I { background: #4ECDC4; }
+        .dimension-S { background: #45B7D1; }
+        .dimension-N { background: #96CEB4; }
+        .dimension-T { background: #FECA57; }
+        .dimension-F { background: #FF9FF3; }
+        .dimension-J { background: #A8E6CF; }
+        .dimension-P { background: #DDA0DD; }
+
+        /* 改进的问题样式 */
+        .question-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .question-text {
+            flex: 1;
+            font-size: 1.3em;
+            color: #333;
+            line-height: 1.6;
         }
 
         .navigation {
@@ -410,6 +499,24 @@
                 margin-bottom: 20px;
             }
 
+            /* 6点量表移动端优化 */
+            .likert-scale {
+                gap: 8px;
+            }
+
+            .likert-option {
+                min-width: 70px;
+                padding: 12px 8px;
+            }
+
+            .likert-value {
+                font-size: 1em;
+            }
+
+            .likert-text {
+                font-size: 0.8em;
+            }
+
             .options {
                 gap: 10px;
             }
@@ -459,8 +566,8 @@
 <body>
     <div class="quiz-container">
         <div class="quiz-header">
-            <h1>MBTI人格类型测试</h1>
-            <p>通过一系列问题，发现你独特的人格类型</p>
+            <h1>专业MBTI人格测试</h1>
+            <p>基于荣格心理类型理论的专业测试，使用6点量表确保准确性</p>
         </div>
 
         <div class="progress-bar">
@@ -471,11 +578,45 @@
             <!-- 问题将在这里动态生成 -->
         </div>
 
-        <div class="navigation">
+        <div id="instructions" style="background: #f8f9fa; padding: 20px; border-radius: 12px; margin-bottom: 30px; text-align: left;">
+            <h3 style="color: #333; margin-bottom: 15px;">测试说明</h3>
+            <p style="color: #666; line-height: 1.6; margin-bottom: 10px;">
+                <strong>测试方法：</strong>请根据题目描述，选择最符合您情况的程度。
+            </p>
+            <p style="color: #666; line-height: 1.6; margin-bottom: 10px;">
+                <strong>评分标准：</strong>
+            </p>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 15px 0;">
+                <div style="text-align: center; padding: 8px; background: white; border-radius: 8px;">
+                    <strong>1分</strong><br>完全不符合
+                </div>
+                <div style="text-align: center; padding: 8px; background: white; border-radius: 8px;">
+                    <strong>2分</strong><br>不太符合
+                </div>
+                <div style="text-align: center; padding: 8px; background: white; border-radius: 8px;">
+                    <strong>3分</strong><br>有点不符合
+                </div>
+                <div style="text-align: center; padding: 8px; background: white; border-radius: 8px;">
+                    <strong>4分</strong><br>有点符合
+                </div>
+                <div style="text-align: center; padding: 8px; background: white; border-radius: 8px;">
+                    <strong>5分</strong><br>比较符合
+                </div>
+                <div style="text-align: center; padding: 8px; background: white; border-radius: 8px;">
+                    <strong>6分</strong><br>完全符合
+                </div>
+            </div>
+            <p style="color: #666; line-height: 1.6; margin-bottom: 10px;">
+                <strong>注意事项：</strong>请根据您的真实感受回答，不要过度思考。测试包含48道题目，预计需要8-10分钟完成。
+            </p>
+            <button class="btn btn-primary" onclick="startQuiz()" style="margin-top: 15px;">开始测试</button>
+        </div>
+
+        <div class="navigation" id="navigation" style="display: none;">
             <button class="btn btn-secondary" id="prevBtn" onclick="previousQuestion()" disabled>
                 上一题
             </button>
-            <span id="questionCounter">1 / 20</span>
+            <span id="questionCounter">1 / 48</span>
             <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>
                 下一题
             </button>
@@ -544,147 +685,254 @@
     </div>
 
     <script>
-        // 测试题目
+        // 专业的MBTI测试题目库 - 使用6点量表
         const questions = [
+            // E/I 维度题目 (12题)
             {
-                question: "在社交聚会中，你通常如何表现？",
-                options: [
-                    { text: "主动与陌生人交谈，享受热闹的氛围", value: "E" },
-                    { text: "选择与熟悉的朋友深入交谈", value: "I" }
-                ]
+                question: "我喜欢参加聚会和社交活动",
+                dimension: "E",
+                type: "positive"
             },
             {
-                question: "做决定时，你更倾向于？",
-                options: [
-                    { text: "基于逻辑和客观分析", value: "T" },
-                    { text: "考虑他人感受和价值观", value: "F" }
-                ]
+                question: "我觉得独处比参加聚会更让我感到放松",
+                dimension: "I",
+                type: "positive"
             },
             {
-                question: "你更喜欢什么样的工作环境？",
-                options: [
-                    { text: "有明确计划和结构的环境", value: "J" },
-                    { text: "灵活多变，能随机应变的环境", value: "P" }
-                ]
+                question: "我倾向于在讨论中主动表达自己的观点",
+                dimension: "E",
+                type: "positive"
             },
             {
-                question: "学习新事物时，你更注重？",
-                options: [
-                    { text: "具体的实用技能和方法", value: "S" },
-                    { text: "理论概念和未来可能性", value: "N" }
-                ]
+                question: "我更喜欢在安静的环境中思考和工作",
+                dimension: "I",
+                type: "positive"
             },
             {
-                question: "周末休息时，你更愿意？",
-                options: [
-                    { text: "外出参加活动或聚会", value: "E" },
-                    { text: "在家安静地休息或思考", value: "I" }
-                ]
+                question: "我不喜欢成为众人关注的焦点",
+                dimension: "I",
+                type: "positive"
             },
             {
-                question: "面对冲突时，你通常？",
-                options: [
-                    { text: "直接面对，寻求逻辑解决方案", value: "T" },
-                    { text: "考虑各方感受，寻求和谐", value: "F" }
-                ]
+                question: "我能够轻松与陌生人开始对话",
+                dimension: "E",
+                type: "positive"
             },
             {
-                question: "你对计划的看法是？",
-                options: [
-                    { text: "喜欢提前制定详细计划", value: "J" },
-                    { text: "更愿意保持开放和灵活性", value: "P" }
-                ]
+                question: "我觉得长时间的社交活动让我感到疲惫",
+                dimension: "I",
+                type: "positive"
             },
             {
-                question: "在工作中，你更重视？",
-                options: [
-                    { text: "具体事实和实际结果", value: "S" },
-                    { text: "创新想法和长远愿景", value: "N" }
-                ]
+                question: "我喜欢在团队中工作而不是独自完成任务",
+                dimension: "E",
+                type: "positive"
             },
             {
-                question: "在团队项目中，你通常扮演？",
-                options: [
-                    { text: "积极的参与者和协调者", value: "E" },
-                    { text: "深思熟虑的观察者和分析者", value: "I" }
-                ]
+                question: "我不喜欢在没有准备的情况下被突然要求发言",
+                dimension: "I",
+                type: "positive"
             },
             {
-                question: "评价一个决定时，你更看重？",
-                options: [
-                    { text: "效率和逻辑正确性", value: "T" },
-                    { text: "对人的影响和公平性", value: "F" }
-                ]
+                question: "我在人群中感到充满活力和兴奋",
+                dimension: "E",
+                type: "positive"
             },
             {
-                question: "你的工作风格更倾向于？",
-                options: [
-                    { text: "有条不紊，按时完成任务", value: "J" },
-                    { text: "在截止日期前冲刺，享受压力", value: "P" }
-                ]
+                question: "我需要独处时间来恢复精力",
+                dimension: "I",
+                type: "positive"
             },
             {
-                question: "你更感兴趣的是？",
-                options: [
-                    { text: "事物的实际运作方式", value: "S" },
-                    { text: "事物背后的原理和模式", value: "N" }
-                ]
+                question: "我更喜欢通过电话或面对面交流而不是通过文字",
+                dimension: "E",
+                type: "positive"
+            },
+
+            // S/N 维度题目 (12题)
+            {
+                question: "我更关注具体的现实而不是抽象的可能性",
+                dimension: "S",
+                type: "positive"
             },
             {
-                question: "在会议中，你更倾向于？",
-                options: [
-                    { text: "积极参与讨论，表达观点", value: "E" },
-                    { text: "仔细倾听后提出见解", value: "I" }
-                ]
+                question: "我喜欢探索新的想法和创新的可能性",
+                dimension: "N",
+                type: "positive"
             },
             {
-                question: "处理问题时，你首先考虑？",
-                options: [
-                    { text: "问题的逻辑和事实基础", value: "T" },
-                    { text: "问题对相关人员的影响", value: "F" }
-                ]
+                question: "我更信任过去的经验和已知的事实",
+                dimension: "S",
+                type: "positive"
             },
             {
-                question: "你的生活方式更偏向？",
-                options: [
-                    { text: "有序，喜欢掌控局面", value: "J" },
-                    { text: "随性，喜欢探索可能性", value: "P" }
-                ]
+                question: "我经常思考未来的可能性而不是当前的细节",
+                dimension: "N",
+                type: "positive"
             },
             {
-                question: "你更信任？",
-                options: [
-                    { text: "过去的经验和具体证据", value: "S" },
-                    { text: "直觉和未来可能性", value: "N" }
-                ]
+                question: "我不喜欢过于理论化的讨论",
+                dimension: "S",
+                type: "positive"
             },
             {
-                question: "在压力下，你通常会？",
-                options: [
-                    { text: "寻求他人支持和建议", value: "E" },
-                    { text: "独自思考和消化压力", value: "I" }
-                ]
+                question: "我喜欢发现事物之间的联系和模式",
+                dimension: "N",
+                type: "positive"
             },
             {
-                question: "你更看重工作中的？",
-                options: [
-                    { text: "效率和成果", value: "T" },
-                    { text: "团队合作和和谐", value: "F" }
-                ]
+                question: "我更注重实用性而不是创新性",
+                dimension: "S",
+                type: "positive"
             },
             {
-                question: "对于新信息，你更关注？",
-                options: [
-                    { text: "具体的细节和实际应用", value: "S" },
-                    { text: "潜在的含义和未来影响", value: "N" }
-                ]
+                question: "我经常有灵感突然涌现的体验",
+                dimension: "N",
+                type: "positive"
             },
             {
-                question: "你更喜欢？",
-                options: [
-                    { text: "快速做出决定并执行", value: "J" },
-                    { text: "收集更多信息再决定", value: "P" }
-                ]
+                question: "我喜欢按照明确的步骤做事",
+                dimension: "S",
+                type: "positive"
+            },
+            {
+                question: "我不喜欢过于注重细节的工作",
+                dimension: "N",
+                type: "positive"
+            },
+            {
+                question: "我更关注现在而不是未来",
+                dimension: "S",
+                type: "positive"
+            },
+            {
+                question: "我喜欢想象不同的情景和可能性",
+                dimension: "N",
+                type: "positive"
+            },
+
+            // T/F 维度题目 (12题)
+            {
+                question: "在做决定时，我更重视逻辑分析而不是情感因素",
+                dimension: "T",
+                type: "positive"
+            },
+            {
+                question: "在做决定时，我考虑他人的感受很重要",
+                dimension: "F",
+                type: "positive"
+            },
+            {
+                question: "我认为客观公正比和谐更重要",
+                dimension: "T",
+                type: "positive"
+            },
+            {
+                question: "我能够理解他人的情感和需求",
+                dimension: "F",
+                type: "positive"
+            },
+            {
+                question: "我不喜欢在决定中过多考虑个人情感",
+                dimension: "T",
+                type: "positive"
+            },
+            {
+                question: "我重视人际关系和和谐氛围",
+                dimension: "F",
+                type: "positive"
+            },
+            {
+                question: "我认为批评应该是客观和建设性的",
+                dimension: "T",
+                type: "positive"
+            },
+            {
+                question: "我经常为他人感到高兴或难过",
+                dimension: "F",
+                type: "positive"
+            },
+            {
+                question: "我认为效率比感受更重要",
+                dimension: "T",
+                type: "positive"
+            },
+            {
+                question: "我不喜欢看到他人受到伤害",
+                dimension: "F",
+                type: "positive"
+            },
+            {
+                question: "我认为公平不等于每个人都得到同样的对待",
+                dimension: "T",
+                type: "positive"
+            },
+            {
+                question: "我重视个人价值观在决定中的作用",
+                dimension: "F",
+                type: "positive"
+            },
+
+            // J/P 维度题目 (12题)
+            {
+                question: "我喜欢制定计划并按照计划执行",
+                dimension: "J",
+                type: "positive"
+            },
+            {
+                question: "我喜欢保持选择的开放性和灵活性",
+                dimension: "P",
+                type: "positive"
+            },
+            {
+                question: "我喜欢按时完成任务并提前准备",
+                dimension: "J",
+                type: "positive"
+            },
+            {
+                question: "我在压力下工作得更好",
+                dimension: "P",
+                type: "positive"
+            },
+            {
+                question: "我不喜欢计划被打乱",
+                dimension: "J",
+                type: "positive"
+            },
+            {
+                question: "我喜欢同时处理多个任务",
+                dimension: "P",
+                type: "positive"
+            },
+            {
+                question: "我认为遵守截止日期很重要",
+                dimension: "J",
+                type: "positive"
+            },
+            {
+                question: "我不喜欢过于严格的时间安排",
+                dimension: "P",
+                type: "positive"
+            },
+            {
+                question: "我喜欢把事情整理得井井有条",
+                dimension: "J",
+                type: "positive"
+            },
+            {
+                question: "我喜欢探索不同的选择而不是立即做出决定",
+                dimension: "P",
+                type: "positive"
+            },
+            {
+                question: "我认为完成已开始的任务很重要",
+                dimension: "J",
+                type: "positive"
+            },
+            {
+                question: "我喜欢即兴发挥而不是严格按计划行事",
+                dimension: "P",
+                type: "positive"
             }
         ];
 
@@ -841,12 +1089,32 @@
         let answers = [];
         let scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
 
+        // 6点量表选项
+        const likertOptions = [
+            { value: 1, text: "完全不符合" },
+            { value: 2, text: "不太符合" },
+            { value: 3, text: "有点不符合" },
+            { value: 4, text: "有点符合" },
+            { value: 5, text: "比较符合" },
+            { value: 6, text: "完全符合" }
+        ];
+
+        // 开始测试
+        function startQuiz() {
+            // 隐藏说明，显示测试内容
+            document.getElementById('instructions').style.display = 'none';
+            document.getElementById('navigation').style.display = 'flex';
+            document.getElementById('quizContent').style.display = 'block';
+
+            // 初始化测试
+            initQuiz();
+        }
+
         // 初始化测试
         function initQuiz() {
             currentQuestion = 0;
             answers = [];
             scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
-            document.getElementById('quizContent').style.display = 'block';
             document.getElementById('resultContainer').style.display = 'none';
             document.getElementById('loading').style.display = 'none';
             showQuestion(0);
@@ -857,13 +1125,16 @@
             const question = questions[index];
             const questionHtml = `
                 <div class="question-card active">
-                    <div class="question-number">问题 ${index + 1}</div>
+                    <div class="question-header">
+                        <div class="question-number">问题 ${index + 1}</div>
+                        <div class="dimension-indicator dimension-${question.dimension}">${question.dimension}</div>
+                    </div>
                     <div class="question-text">${question.question}</div>
-                    <div class="options">
-                        ${question.options.map((option, i) => `
-                            <div class="option" onclick="selectOption(${i}, '${option.value}')">
-                                <div class="option-letter">${String.fromCharCode(65 + i)}</div>
-                                <div class="option-text">${option.text}</div>
+                    <div class="likert-scale">
+                        ${likertOptions.map((option, i) => `
+                            <div class="likert-option" onclick="selectLikertOption(${i}, ${option.value})">
+                                <div class="likert-value">${option.value}</div>
+                                <div class="likert-text">${option.text}</div>
                             </div>
                         `).join('')}
                     </div>
@@ -873,20 +1144,32 @@
             document.getElementById('quizContent').innerHTML = questionHtml;
             updateProgress();
             updateNavigation();
+
+            // 恢复之前的选择
+            if (answers[currentQuestion]) {
+                const prevValue = answers[currentQuestion].value;
+                const optionIndex = prevValue - 1;
+                document.querySelectorAll('.likert-option')[optionIndex].classList.add('selected');
+            }
         }
 
-        // 选择选项
-        function selectOption(optionIndex, value) {
+        // 选择6点量表选项
+        function selectLikertOption(optionIndex, value) {
             // 移除之前的选择
-            document.querySelectorAll('.option').forEach(opt => {
+            document.querySelectorAll('.likert-option').forEach(opt => {
                 opt.classList.remove('selected');
             });
 
             // 添加新的选择
-            document.querySelectorAll('.option')[optionIndex].classList.add('selected');
+            document.querySelectorAll('.likert-option')[optionIndex].classList.add('selected');
 
             // 记录答案
-            answers[currentQuestion] = value;
+            const question = questions[currentQuestion];
+            answers[currentQuestion] = {
+                value: value,
+                dimension: question.dimension,
+                type: question.type
+            };
 
             // 启用下一题按钮
             document.getElementById('nextBtn').disabled = false;
@@ -920,7 +1203,7 @@
         // 更新导航按钮
         function updateNavigation() {
             document.getElementById('prevBtn').disabled = currentQuestion === 0;
-            document.getElementById('nextBtn').disabled = !answers[currentQuestion];
+            document.getElementById('nextBtn').disabled = !answers[currentQuestion] || !answers[currentQuestion].value;
 
             if (currentQuestion === questions.length - 1) {
                 document.getElementById('nextBtn').textContent = '查看结果';
@@ -936,7 +1219,17 @@
 
             // 计算每个维度的分数
             answers.forEach(answer => {
-                scores[answer]++;
+                if (!answer || !answer.value) return;
+
+                const value = answer.value;
+                const dimension = answer.dimension;
+                const type = answer.type;
+
+                // 对于正向题目，直接计分
+                // 对于反向题目，将分数反转 (7 - value)
+                let score = type === 'positive' ? value : (7 - value);
+
+                scores[dimension] += score;
             });
 
             // 确定每个维度的倾向
@@ -986,7 +1279,7 @@
                 document.getElementById('resultDetails').innerHTML = detailsHtml;
 
                 // 隐藏导航
-                document.querySelector('.navigation').style.display = 'none';
+                document.getElementById('navigation').style.display = 'none';
             }, 2000);
         }
 
@@ -1005,8 +1298,11 @@
 
         // 重新开始
         function restartQuiz() {
-            document.querySelector('.navigation').style.display = 'flex';
-            initQuiz();
+            // 隐藏结果，显示说明
+            document.getElementById('resultContainer').style.display = 'none';
+            document.getElementById('navigation').style.display = 'none';
+            document.getElementById('quizContent').style.display = 'none';
+            document.getElementById('instructions').style.display = 'block';
         }
 
         // 分享结果
@@ -1031,7 +1327,12 @@
 
         // 页面加载时初始化
         window.onload = function() {
-            initQuiz();
+            // 显示测试说明，隐藏测试内容
+            document.getElementById('quizContent').style.display = 'none';
+            document.getElementById('resultContainer').style.display = 'none';
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('navigation').style.display = 'none';
+            document.getElementById('instructions').style.display = 'block';
         };
     </script>
 </body>
