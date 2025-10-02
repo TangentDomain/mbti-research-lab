@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INTP vs INTJ 深度对比分析</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --intp-color: #5B8DEF;
+            --intj-color: #6B46C1;
+            --intp-light: #E8F0FE;
+            --intj-light: #F3E8FF;
+            --text-dark: #2d3748;
+            --text-light: #718096;
+            --bg-light: #f7fafc;
+            --border-radius: 16px;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: white;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .comparison-header {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            align-items: center;
+        }
+
+        .type-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .intp-card {
+            border-top: 4px solid var(--intp-color);
+        }
+
+        .intj-card {
+            border-top: 4px solid var(--intj-color);
+        }
+
+        .type-name {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .intp-name {
+            color: var(--intp-color);
+        }
+
+        .intj-name {
+            color: var(--intj-color);
+        }
+
+        .type-title {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .vs-divider {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .section {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .comparison-item {
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid;
+        }
+
+        .intp-item {
+            background: var(--intp-light);
+            border-left-color: var(--intp-color);
+        }
+
+        .intj-item {
+            background: var(--intj-light);
+            border-left-color: var(--intj-color);
+        }
+
+        .comparison-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .trait-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .trait-card {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .trait-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .trait-name {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .trait-scores {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .trait-score {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        .intp-score {
+            background: var(--intp-color);
+        }
+
+        .intj-score {
+            background: var(--intj-color);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 1s ease-out;
+        }
+
+        .intp-progress {
+            background: var(--intp-color);
+        }
+
+        .intj-progress {
+            background: var(--intj-color);
+        }
+
+        .collaboration-section {
+            background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.9));
+            border: 2px solid var(--primary-color);
+        }
+
+        .synergy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .synergy-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .synergy-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .synergy-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .synergy-description {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .radar-container {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        #radarCanvas {
+            max-width: 600px;
+            height: auto;
+        }
+
+        .quote-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .quote-card {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid;
+            font-style: italic;
+        }
+
+        .intp-quote {
+            border-left-color: var(--intp-color);
+        }
+
+        .intj-quote {
+            border-left-color: var(--intj-color);
+        }
+
+        .famous-people {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .people-list {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 12px;
+        }
+
+        .people-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .people-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .person-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .person-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .summary-table th,
+        .summary-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .summary-table th {
+            background: var(--bg-light);
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .summary-table .intp-cell {
+            background: var(--intp-light);
+            color: var(--intp-color);
+            font-weight: 600;
+        }
+
+        .summary-table .intj-cell {
+            background: var(--intj-light);
+            color: var(--intj-color);
+            font-weight: 600;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .comparison-header {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .vs-divider {
+                margin: 1rem auto;
+            }
+
+            .comparison-grid,
+            .quote-grid,
+            .famous-people {
+                grid-template-columns: 1fr;
+            }
+
+            .trait-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .type-name {
+                font-size: 1.5rem;
+            }
+
+            .section {
+                padding: 1.5rem;
+            }
+
+            .trait-scores {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧠 INTP vs INTJ 深度对比</h1>
+            <p class="subtitle">逻辑学家 vs 建筑师 - 理性直觉者的巅峰对决</p>
+        </header>
+
+        <div class="comparison-header">
+            <div class="type-card intp-card">
+                <div class="type-name intp-name">INTP</div>
+                <div class="type-title">逻辑学家</div>
+                <div style="color: var(--text-light); font-size: 0.9rem;">
+                    内向 · 直觉 · 思考 · 感知<br>
+                    逻辑分析 | 创新思维 | 理论探索
+                </div>
+            </div>
+
+            <div class="vs-divider">VS</div>
+
+            <div class="type-card intj-card">
+                <div class="type-name intj-name">INTJ</div>
+                <div class="type-title">建筑师</div>
+                <div style="color: var(--text-light); font-size: 0.9rem;">
+                    内向 · 直觉 · 思考 · 判断<br>
+                    战略规划 | 系统思维 | 目标导向
+                </div>
+            </div>
+        </div>
+
+        <!-- 核心差异对比 -->
+        <section class="section">
+            <h2 class="section-title">🎯 核心差异对比</h2>
+            <div class="comparison-grid">
+                <div class="comparison-item intp-item">
+                    <div class="comparison-title">📊 INTP - 探索性思维</div>
+                    <p>追求理论完整性，喜欢探索各种可能性，对抽象概念充满好奇。更关注"为什么"而非"怎么做"，享受思考过程本身。倾向于开放式探索，不愿过早下结论。</p>
+                </div>
+                <div class="comparison-item intj-item">
+                    <div class="comparison-title">🎯 INTJ - 目标导向思维</div>
+                    <p>注重效率和成果，善于制定长期战略，追求最优解决方案。更关注"怎么做"而非"为什么"，强调实际应用。倾向于系统性思考，快速做出决策。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 认知功能对比 -->
+        <section class="section">
+            <h2 class="section-title">🧩 认知功能深度解析</h2>
+
+            <div class="trait-grid">
+                <div class="trait-card">
+                    <div class="trait-header">
+                        <div class="trait-name">主导功能</div>
+                        <div class="trait-scores">
+                            <div class="trait-score intp-score">Ti</div>
+                            <div class="trait-score intj-score">Ni</div>
+                        </div>
+                    </div>
+                    <div class="comparison-grid" style="margin: 0;">
+                        <div class="intp-item" style="margin: 0;">
+                            <strong>内倾思考 (Ti)</strong> - 追求逻辑一致性和内在理解，构建精确的理论框架
+                        </div>
+                        <div class="intj-item" style="margin: 0;">
+                            <strong>内倾直觉 (Ni)</strong> - 洞察模式和趋势，形成长期战略愿景
+                        </div>
+                    </div>
+                </div>
+
+                <div class="trait-card">
+                    <div class="trait-header">
+                        <div class="trait-name">辅助功能</div>
+                        <div class="trait-scores">
+                            <div class="trait-score intp-score">Ne</div>
+                            <div class="trait-score intj-score">Te</div>
+                        </div>
+                    </div>
+                    <div class="comparison-grid" style="margin: 0;">
+                        <div class="intp-item" style="margin: 0;">
+                            <strong>外倾直觉 (Ne)</strong> - 探索可能性和联系，产生创意和创新想法
+                        </div>
+                        <div class="intj-item" style="margin: 0;">
+                            <strong>外倾思考 (Te)</strong> - 组织外部环境，执行计划和实现目标
+                        </div>
+                    </div>
+                </div>
+
+                <div class="trait-card">
+                    <div class="trait-header">
+                        <div class="trait-name">第三功能</div>
+                        <div class="trait-scores">
+                            <div class="trait-score intp-score">Si</div>
+                            <div class="trait-score intj-score">Fi</div>
+                        </div>
+                    </div>
+                    <div class="comparison-grid" style="margin: 0;">
+                        <div class="intp-item" style="margin: 0;">
+                            <strong>内倾感觉 (Si)</strong> - 回忆过往经验，提供稳定性和细节
+                        </div>
+                        <div class="intj-item" style="margin: 0;">
+                            <strong>内倾情感 (Fi)</strong> - 坚守个人价值观，做出符合信念的决定
+                        </div>
+                    </div>
+                </div>
+
+                <div class="trait-card">
+                    <div class="trait-header">
+                        <div class="trait-name">劣势功能</div>
+                        <div class="trait-scores">
+                            <div class="trait-score intp-score">Fe</div>
+                            <div class="trait-score intj-score">Se</div>
+                        </div>
+                    </div>
+                    <div class="comparison-grid" style="margin: 0;">
+                        <div class="intp-item" style="margin: 0;">
+                            <strong>外倾情感 (Fe)</strong> - 理解他人情感，维持社会和谐
+                        </div>
+                        <div class="intj-item" style="margin: 0;">
+                            <strong>外倾感觉 (Se)</strong> - 关注当下现实，享受具体体验
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 能力雷达图 -->
+        <section class="section">
+            <h2 class="section-title">📈 六维能力对比</h2>
+            <div class="radar-container">
+                <canvas id="radarCanvas" width="600" height="600"></canvas>
+            </div>
+        </section>
+
+        <!-- 优势与挑战 -->
+        <section class="section">
+            <h2 class="section-title">⚖️ 优势与挑战分析</h2>
+
+            <div class="trait-grid">
+                <div class="trait-card">
+                    <div class="trait-header">
+                        <div class="trait-name intp-name">INTP 优势</div>
+                    </div>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 0.5rem;">🔍 深度逻辑分析能力</li>
+                        <li style="margin-bottom: 0.5rem;">💡 创新思维和创意</li>
+                        <li style="margin-bottom: 0.5rem;">🧐 客观公正的判断</li>
+                        <li style="margin-bottom: 0.5rem;">📚 强烈的好奇心</li>
+                        <li>🔄 思想开放，适应性强</li>
+                    </ul>
+                </div>
+
+                <div class="trait-card">
+                    <div class="trait-header">
+                        <div class="trait-name intj-name">INTJ 优势</div>
+                    </div>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 0.5rem;">🎯 战略规划能力</li>
+                        <li style="margin-bottom: 0.5rem;">⚡ 高效执行力</li>
+                        <li style="margin-bottom: 0.5rem;">🔧 系统性思维</li>
+                        <li style="margin-bottom: 0.5rem;">💪 意志坚定</li>
+                        <li>📈 长远目标导向</li>
+                    </ul>
+                </div>
+
+                <div class="trait-card">
+                    <div class="trait-header">
+                        <div class="trait-name intp-name">INTP 挑战</div>
+                    </div>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 0.5rem;">⏰ 时间管理和拖延</li>
+                        <li style="margin-bottom: 0.5rem;">🎯 难以专注具体目标</li>
+                        <li style="margin-bottom: 0.5rem;">🗣️ 沟通表达困难</li>
+                        <li style="margin-bottom: 0.5rem;">🤝 社交技巧不足</li>
+                        <li>📋 实际执行能力弱</li>
+                    </ul>
+                </div>
+
+                <div class="trait-card">
+                    <div class="trait-header">
+                        <div class="trait-name intj-name">INTJ 挑战</div>
+                    </div>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 0.5rem;">🤐 表达情感困难</li>
+                        <li style="margin-bottom: 0.5rem;">🤏 缺乏耐心</li>
+                        <li style="margin-bottom: 0.5rem;">🎭 过于理想化</li>
+                        <li style="margin-bottom: 0.5rem;">👥 团队协作挑战</li>
+                        <li>🌱 适应变化较慢</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 著名人物 -->
+        <section class="section">
+            <h2 class="section-title">🌟 著名代表人物</h2>
+            <div class="famous-people">
+                <div class="people-list">
+                    <div class="people-title intp-name">INTP 代表人物</div>
+                    <div class="people-grid">
+                        <div class="person-item">
+                            <div class="person-avatar">爱</div>
+                            <span>阿尔伯特·爱因斯坦</span>
+                        </div>
+                        <div class="person-item">
+                            <div class="person-avatar">笛</div>
+                            <span>勒内·笛卡尔</span>
+                        </div>
+                        <div class="person-item">
+                            <div class="person-avatar">亚</div>
+                            <span>亚里士多德</span>
+                        </div>
+                        <div class="person-item">
+                            <div class="person-avatar">笛</div>
+                            <span>布莱兹·帕斯卡</span>
+                        </div>
+                        <div class="person-item">
+                            <div class="person-avatar">蒂</div>
+                            <span>蒂姆·伯纳斯·李</span>
+                        </div>
+                        <div class="person-item">
+                            <div class="person-avatar">马</div>
+                            <span>马克·扎克伯格</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="people-list">
+                    <div class="people-title intj-name">INTJ 代表人物</div>
+                    <div class="people-grid">
+                        <div class="person-item">
+                            <div class="person-avatar">萨</div>
+                            <span>卡尔·荣格</span>
+                        </div>
+                        <div class="person-item">
+                            <div class="person-avatar">牛</div>
+                            <span>艾萨克·牛顿</span>
+                        </div>
+                        <div class="person-item">
+                            <div class="person-avatar">尼</div>
+                            <span>弗里德里希·尼采</span>
+                        </div>
+                        <div class="person-item">
+                            <div class="person-avatar">埃</div>
+                            <span>埃隆·马斯克</span>
+                        </div>
+                        <div class="person-item">
+                            <div class="person-avatar">乔</div>
+                            <span>史蒂夫·乔布斯</span>
+                        </div>
+                        <div class="person-item">
+                            <div class="person-avatar">弗</div>
+                            <span>弗拉基米尔·列宁</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 协作潜力 -->
+        <section class="section collaboration-section">
+            <h2 class="section-title">🤝 协作潜力分析</h2>
+
+            <div class="synergy-grid">
+                <div class="synergy-card">
+                    <div class="synergy-icon">🧠</div>
+                    <div class="synergy-title">智力互补</div>
+                    <div class="synergy-description">INTP的理论深度与INTJ的战略思维形成完美互补，能够产生突破性创新</div>
+                </div>
+
+                <div class="synergy-card">
+                    <div class="synergy-icon">🎯</div>
+                    <div class="synergy-title">目标平衡</div>
+                    <div class="synergy-description">INTP提供创意可能性，INTJ负责具体执行，实现理想与现实的平衡</div>
+                </div>
+
+                <div class="synergy-card">
+                    <div class="synergy-icon">🔍</div>
+                    <div class="synergy-title">问题解决</div>
+                    <div class="synergy-description">INTP擅长根本原因分析，INTJ精于解决方案设计，形成完整的解决链条</div>
+                </div>
+
+                <div class="synergy-card">
+                    <div class="synergy-icon">📈</div>
+                    <div class="synergy-title">创新推动</div>
+                    <div class="synergy-description">两者结合能够将抽象理论转化为实际应用，推动科技创新和社会进步</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 对比总结表 -->
+        <section class="section">
+            <h2 class="section-title">📋 综合对比总结</h2>
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th>对比维度</th>
+                        <th class="intp-cell">INTP 逻辑学家</th>
+                        <th class="intj-cell">INTJ 建筑师</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>核心动机</strong></td>
+                        <td>理解世界，追求真理</td>
+                        <td>改造世界，实现愿景</td>
+                    </tr>
+                    <tr>
+                        <td><strong>决策方式</strong></td>
+                        <td>开放式探索，延迟判断</td>
+                        <td>系统性分析，快速决策</td>
+                    </tr>
+                    <tr>
+                        <td><strong>工作风格</strong></td>
+                        <td>灵活适应，创意驱动</td>
+                        <td>计划导向，效率优先</td>
+                    </tr>
+                    <tr>
+                        <td><strong>人际关系</strong></td>
+                        <td>重视智力交流，社交选择性</td>
+                        <td>重视能力互补，目标导向</td>
+                    </tr>
+                    <tr>
+                        <td><strong>压力表现</strong></td>
+                        <td>过度分析，行动瘫痪</td>
+                        <td>过度控制，情感压抑</td>
+                    </tr>
+                    <tr>
+                        <td><strong>成长方向</strong></td>
+                        <td>提升执行力，关注现实</td>
+                        <td>增强灵活性，关注当下</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <script>
+        // 绘制雷达图
+        function drawRadarChart() {
+            const canvas = document.getElementById('radarCanvas');
+            const ctx = canvas.getContext('2d');
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = 200;
+
+            // 六个维度
+            const dimensions = ['逻辑思维', '创新能力', '执行能力', '战略规划', '适应能力', '决策效率'];
+
+            // INTP和INTJ的能力值（满分100）
+            const intpData = [95, 90, 60, 75, 85, 70];
+            const intjData = [90, 85, 95, 95, 70, 90];
+
+            // 绘制背景网格
+            ctx.strokeStyle = '#e2e8f0';
+            ctx.lineWidth = 1;
+
+            // 绘制5个同心六边形
+            for (let i = 1; i <= 5; i++) {
+                ctx.beginPath();
+                for (let j = 0; j < 6; j++) {
+                    const angle = (Math.PI / 3) * j - Math.PI / 2;
+                    const x = centerX + Math.cos(angle) * (radius * i / 5);
+                    const y = centerY + Math.sin(angle) * (radius * i / 5);
+
+                    if (j === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                }
+                ctx.closePath();
+                ctx.stroke();
+            }
+
+            // 绘制轴线
+            for (let i = 0; i < 6; i++) {
+                const angle = (Math.PI / 3) * i - Math.PI / 2;
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.lineTo(
+                    centerX + Math.cos(angle) * radius,
+                    centerY + Math.sin(angle) * radius
+                );
+                ctx.stroke();
+            }
+
+            // 绘制标签
+            ctx.fillStyle = '#2d3748';
+            ctx.font = '14px Arial';
+            ctx.textAlign = 'center';
+
+            for (let i = 0; i < 6; i++) {
+                const angle = (Math.PI / 3) * i - Math.PI / 2;
+                const x = centerX + Math.cos(angle) * (radius + 30);
+                const y = centerY + Math.sin(angle) * (radius + 30);
+                ctx.fillText(dimensions[i], x, y);
+            }
+
+            // 绘制INTP数据
+            ctx.fillStyle = 'rgba(91, 141, 239, 0.3)';
+            ctx.strokeStyle = '#5B8DEF';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+
+            for (let i = 0; i < 6; i++) {
+                const angle = (Math.PI / 3) * i - Math.PI / 2;
+                const value = intpData[i] / 100;
+                const x = centerX + Math.cos(angle) * (radius * value);
+                const y = centerY + Math.sin(angle) * (radius * value);
+
+                if (i === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+
+            // 绘制INTJ数据
+            ctx.fillStyle = 'rgba(107, 70, 193, 0.3)';
+            ctx.strokeStyle = '#6B46C1';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+
+            for (let i = 0; i < 6; i++) {
+                const angle = (Math.PI / 3) * i - Math.PI / 2;
+                const value = intjData[i] / 100;
+                const x = centerX + Math.cos(angle) * (radius * value);
+                const y = centerY + Math.sin(angle) * (radius * value);
+
+                if (i === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+
+            // 绘制图例
+            ctx.font = '16px Arial';
+            ctx.textAlign = 'left';
+
+            // INTP图例
+            ctx.fillStyle = '#5B8DEF';
+            ctx.fillRect(50, 50, 20, 20);
+            ctx.fillStyle = '#2d3748';
+            ctx.fillText('INTP 逻辑学家', 80, 65);
+
+            // INTJ图例
+            ctx.fillStyle = '#6B46C1';
+            ctx.fillRect(50, 80, 20, 20);
+            ctx.fillStyle = '#2d3748';
+            ctx.fillText('INTJ 建筑师', 80, 95);
+        }
+
+        // 页面加载完成后绘制雷达图
+        window.addEventListener('load', drawRadarChart);
+
+        // 添加交互效果
+        document.addEventListener('DOMContentLoaded', function() {
+            // 为所有卡片添加悬停效果
+            const cards = document.querySelectorAll('.trait-card, .comparison-item, .synergy-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                    this.style.boxShadow = '0 20px 25px rgba(0,0,0,0.15)';
+                    this.style.transition = 'all 0.3s ease';
+                });
+
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = '';
+                });
+            });
+
+            // 为类型卡片添加脉冲效果
+            const typeCards = document.querySelectorAll('.type-card');
+            typeCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.05)';
+                    this.style.transition = 'all 0.3s ease';
+                });
+
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
