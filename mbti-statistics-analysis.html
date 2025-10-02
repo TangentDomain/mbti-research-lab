@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBTI 统计分析</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --accent-color: #f093fb;
+            --text-dark: #2d3748;
+            --text-light: #718096;
+            --bg-light: #f7fafc;
+            --bg-white: #ffffff;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+            --shadow-xl: 0 20px 25px rgba(0,0,0,0.1);
+            --border-radius: 16px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--text-dark);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.03"><path d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/></g></g></svg>') repeat;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: white;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+
+        .main-content {
+            display: grid;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .stats-section {
+            background: var(--bg-white);
+            border-radius: var(--border-radius);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .chart-container {
+            background: var(--bg-light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            position: relative;
+            height: 400px;
+        }
+
+        .chart-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            background: var(--bg-white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+
+        .data-table th {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .data-table td {
+            padding: 0.8rem 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table tr:hover {
+            background: var(--bg-light);
+        }
+
+        .type-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-right: 0.5rem;
+        }
+
+        .type-nt { background: rgba(102, 126, 234, 0.1); color: var(--primary-color); }
+        .type-nf { background: rgba(240, 147, 251, 0.1); color: #764ba2; }
+        .type-sj { background: rgba(79, 172, 254, 0.1); color: #4facfe; }
+        .type-sp { background: rgba(67, 233, 123, 0.1); color: #43e97b; }
+
+        .percentage-bar {
+            display: inline-block;
+            width: 100px;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-right: 0.5rem;
+        }
+
+        .percentage-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 4px;
+        }
+
+        .comparison-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .comparison-card {
+            background: var(--bg-white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .comparison-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .stat-highlight {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-left: 4px solid var(--primary-color);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .stat-highlight h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .stat-highlight p {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--primary-color);
+            background: var(--bg-white);
+            color: var(--primary-color);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .filter-btn:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .filter-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .insight-card {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .insight-card h4 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .insight-card p {
+            color: var(--text-light);
+            line-height: 1.5;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .comparison-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .stats-section {
+                padding: 1.5rem;
+            }
+
+            .section-title {
+                font-size: 1.3rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .chart-container {
+                padding: 1rem;
+                height: 300px;
+            }
+
+            .data-table {
+                font-size: 0.9rem;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 0.6rem;
+            }
+
+            .filter-controls {
+                gap: 0.5rem;
+            }
+
+            .filter-btn {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.9rem;
+            }
+
+            .insights-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .subtitle {
+                font-size: 0.9rem;
+            }
+
+            .stats-section {
+                padding: 1rem;
+            }
+
+            .section-title {
+                font-size: 1.2rem;
+            }
+
+            .chart-container {
+                height: 250px;
+            }
+
+            .data-table {
+                font-size: 0.8rem;
+            }
+
+            .comparison-card {
+                padding: 1.5rem;
+            }
+
+            .insight-card {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 MBTI 统计分析</h1>
+            <p class="subtitle">探索16种人格类型在全球和中国的分布规律</p>
+        </header>
+
+        <div class="main-content">
+            <section class="stats-section">
+                <h2 class="section-title">📈 人口分布统计</h2>
+
+                <div class="filter-controls">
+                    <button class="filter-btn active" onclick="showDataset('global')">全球数据</button>
+                    <button class="filter-btn" onclick="showDataset('china')">中国数据</button>
+                    <button class="filter-btn" onclick="showDataset('comparison')">对比分析</button>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="chart-container">
+                        <h3 class="chart-title">16型人格分布图</h3>
+                        <canvas id="distributionChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3 class="chart-title">四大类人群占比</h3>
+                        <canvas id="groupChart"></canvas>
+                    </div>
+                </div>
+
+                <div id="globalData">
+                    <h3 class="section-title">🌍 全球人口分布数据</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>排名</th>
+                                <th>类型</th>
+                                <th>类别</th>
+                                <th>占比</th>
+                                <th>分布图</th>
+                                <th>特征描述</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td><span class="type-badge type-sj">ISFJ</span></td>
+                                <td>守护者(SJ)</td>
+                                <td>13.8%</td>
+                                <td><div class="percentage-bar"><div class="percentage-fill" style="width: 13.8%;"></div></div></td>
+                                <td>温暖守护者，专注服务他人</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td><span class="type-badge type-sj">ESFJ</span></td>
+                                <td>守护者(SJ)</td>
+                                <td>12.3%</td>
+                                <td><div class="percentage-bar"><div class="percentage-fill" style="width: 12.3%;"></div></div></td>
+                                <td>和谐支持者，关注他人需求</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td><span class="type-badge type-sj">ISTJ</span></td>
+                                <td>守护者(SJ)</td>
+                                <td>11.6%</td>
+                                <td><div class="percentage-bar"><div class="percentage-fill" style="width: 11.6%;"></div></div></td>
+                                <td>可靠实务家，注重事实细节</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td><span class="type-badge type-sp">ISFP</span></td>
+                                <td>探险家(SP)</td>
+                                <td>8.8%</td>
+                                <td><div class="percentage-bar"><div class="percentage-fill" style="width: 8.8%;"></div></div></td>
+                                <td>灵活艺术家，追求美感自由</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td><span class="type-badge type-nf">ENFP</span></td>
+                                <td>外交家(NF)</td>
+                                <td>8.1%</td>
+                                <td><div class="percentage-bar"><div class="percentage-fill" style="width: 8.1%;"></div></div></td>
+                                <td>热情鼓励者，追求可能性</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td><span class="type-badge type-sj">ESTJ</span></td>
+                                <td>守护者(SJ)</td>
+                                <td>8.7%</td>
+                                <td><div class="percentage-bar"><div class="percentage-fill" style="width: 8.7%;"></div></div></td>
+                                <td>高效管理者，重视秩序规则</td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td><span class="type-badge type-sp">ESFP</span></td>
+                                <td>探险家(SP)</td>
+                                <td>7.3%</td>
+                                <td><div class="percentage-bar"><div class="percentage-fill" style="width: 7.3%;"></div></div></td>
+                                <td>活泼娱乐者，带来欢乐活力</td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td><span class="type-badge type-nf">INFP</span></td>
+                                <td>外交家(NF)</td>
+                                <td>4.4%</td>
+                                <td><div class="percentage-bar"><div class="percentage-fill" style="width: 4.4%;"></div></div></td>
+                                <td>和谐追求者，价值观驱动</td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td><span class="type-badge type-sp">ISTP</span></td>
+                                <td>探险家(SP)</td>
+                                <td>5.4%</td>
+                                <td><div class="percentage-bar"><div class="percentage-fill" style="width: 5.4%;"></div></div></td>
+                                <td>灵活实践者，善于使用工具</td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td><span class="type-badge type-sp">ESTP</span></td>
+                                <td>探险家(SP)</td>
+                                <td>4.3%</td>
+                                <td><div class="percentage-bar"><div class="percentage-fill" style="width: 4.3%;"></div></div></td>
+                                <td>精明实践者，善于应对危机</td>
+                            </tr>
+                            <tr>
+                                <td>11</td>
+                                <td><span class="type-badge type-nt">INTP</span></td>
+                                <td>分析家(NT)</td>
+                                <td>3.3%</td>
+                                <td><div class="percentage-bar"><div class="percentage-fill" style="width: 3.3%;"></div></div></td>
+                                <td>逻辑学家，创新思想家</td>
+                            </tr>
+                            <tr>
+                                <td>12</td>
+                                <td><span class="type-badge type-sj">ESFJ</span></td>
+                                <td>守护者(SJ)</td>
+                                <td>12.3%</td>
+                                <td><div class="percentage-bar"><div class="percentage-fill" style="width: 12.3%;"></div></div></td>
+                                <td>和谐支持者，传统维护者</td>
+                            </tr>
+                            <tr>
+                                <td>13</td>
+                                <td><span class="type-badge type-nt">ENTP</span></td>
+                                <td>分析家(NT)</td>
+                                <td>2.5%</td>
+                                <td><div class="percentage-bar"><div class="percentage-fill" style="width: 2.5%;"></div></div></td>
+                                <td>聪明创新者，喜欢挑战辩论</td>
+                            </tr>
+                            <tr>
+                                <td>14</td>
+                                <td><span class="type-badge type-nt">ENTJ</span></td>
+                                <td>分析家(NT)</td>
+                                <td>2.7%</td>
+                                <td><div class="percentage-bar"><div class="percentage-fill" style="width: 2.7%;"></div></div></td>
+                                <td>天生领导者，目标导向</td>
+                            </tr>
+                            <tr>
+                                <td>15</td>
+                                <td><span class="type-badge type-nf">INFJ</span></td>
+                                <td>外交家(NF)</td>
+                                <td>1.5%</td>
+                                <td><div class="percentage-bar"><div class="percentage-fill" style="width: 1.5%;"></div></div></td>
+                                <td>安静理想主义者，富有同理心</td>
+                            </tr>
+                            <tr>
+                                <td>16</td>
+                                <td><span class="type-badge type-nt">INTJ</span></td>
+                                <td>分析家(NT)</td>
+                                <td>2.1%</td>
+                                <td><div class="percentage-bar"><div class="percentage-fill" style="width: 2.1%;"></div></div></td>
+                                <td>理性战略家，追求完美创新</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="chinaData" style="display: none;">
+                    <h3 class="section-title">🇨🇳 中国人口分布数据</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>排名</th>
+                                <th>类型</th>
+                                <th>类别</th>
+                                <th>占比</th>
+                                <th>与全球对比</th>
+                                <th>文化特征</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td><span class="type-badge type-sj">ISFJ</span></td>
+                                <td>守护者(SJ)</td>
+                                <td>15.1%</td>
+                                <td><span style="color: #dc2626;">↑ +1.3%</span></td>
+                                <td>重视家庭和谐，集体导向</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td><span class="type-badge type-sj">ESFJ</span></td>
+                                <td>守护者(SJ)</td>
+                                <td>13.6%</td>
+                                <td><span style="color: #dc2626;">↑ +1.3%</span></td>
+                                <td>注重人际关系，维护和谐</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td><span class="type-badge type-sj">ISTJ</span></td>
+                                <td>守护者(SJ)</td>
+                                <td>13.2%</td>
+                                <td><span style="color: #dc2626;">↑ +1.6%</span></td>
+                                <td>尊重传统，责任感强</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td><span class="type-badge type-sj">ESTJ</span></td>
+                                <td>守护者(SJ)</td>
+                                <td>9.5%</td>
+                                <td><span style="color: #dc2626;">↑ +0.8%</span></td>
+                                <td>重视秩序，执行有力</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td><span class="type-badge type-sp">ISFP</span></td>
+                                <td>探险家(SP)</td>
+                                <td>9.2%</td>
+                                <td><span style="color: #dc2626;">↑ +0.4%</span></td>
+                                <td>内敛艺术，含蓄表达</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td><span class="type-badge type-nf">ENFP</span></td>
+                                <td>外交家(NF)</td>
+                                <td>8.8%</td>
+                                <td><span style="color: #dc2626;">↑ +0.7%</span></td>
+                                <td>热情但更注重集体</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="comparisonData" style="display: none;">
+                    <h3 class="section-title">🔄 全球 vs 中国 对比分析</h3>
+
+                    <div class="stat-highlight">
+                        <h3>主要发现</h3>
+                        <p>中国人群中SJ型(守护者)比例明显高于全球平均水平，这与中国传统文化中重视稳定、秩序和集体的价值观相符。</p>
+                    </div>
+
+                    <div class="comparison-section">
+                        <div class="comparison-card">
+                            <h3 class="comparison-title">📈 增长显著类型</h3>
+                            <ul style="line-height: 1.8;">
+                                <li><strong>ISTJ</strong>: 13.2% → 11.6% (+1.6%)</li>
+                                <li><strong>ISFJ</strong>: 15.1% → 13.8% (+1.3%)</li>
+                                <li><strong>ESFJ</strong>: 13.6% → 12.3% (+1.3%)</li>
+                                <li><strong>INTJ</strong>: 2.8% → 2.1% (+0.7%)</li>
+                            </ul>
+                        </div>
+                        <div class="comparison-card">
+                            <h3 class="comparison-title">📉 相对减少类型</h3>
+                            <ul style="line-height: 1.8;">
+                                <li><strong>ESFP</strong>: 较全球更低</li>
+                                <li><strong>ESTP</strong>: 较全球更低</li>
+                                <li><strong>ENFP</strong>: 虽增长但仍较低</li>
+                                <li><strong>INFP</strong>: 内向情感型较少</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="stats-section">
+                <h2 class="section-title">💡 深度洞察分析</h2>
+
+                <div class="insights-grid">
+                    <div class="insight-card">
+                        <h4>🎯 稀缺类型价值</h4>
+                        <p>INFJ(1.5%)和INTJ(2.1%)是最稀少的类型，但往往在创新思维和战略规划方面表现出色，具有重要价值。</p>
+                    </div>
+                    <div class="insight-card">
+                        <h4>🏛️ SJ型主导地位</h4>
+                        <p>SJ型(守护者)占全球人口46.4%，体现了人类社会对稳定、秩序和传统的普遍需求。</p>
+                    </div>
+                    <div class="insight-card">
+                        <h4>🧠 NT型创新力量</h4>
+                        <p>NT型(分析家)虽然仅占10.6%，但在科技创新、商业战略等领域发挥关键作用。</p>
+                    </div>
+                    <div class="insight-card">
+                        <h4>🌸 NF型人文关怀</h4>
+                        <p>NF型(外交家)占15.1%，在教育、心理咨询、艺术创作等领域贡献突出。</p>
+                    </div>
+                    <div class="insight-card">
+                        <h4>⚡ SP型适应能力</h4>
+                        <p>SP型(探险家)占27.9%，在危机处理、技能型工作中表现优异，适应性强。</p>
+                    </div>
+                    <div class="insight-card">
+                        <h4>🌍 文化差异影响</h4>
+                        <p>中国SJ型比例更高，反映了东方文化对集体主义和稳定性的重视。</p>
+                    </div>
+                </div>
+
+                <div class="stat-highlight" style="margin-top: 2rem;">
+                    <h3>🔬 研究方法说明</h3>
+                    <p>本分析基于MBTI全球调研数据和中国本土化研究，包含数百万样本的统计结果。数据反映了不同文化背景下人格类型的分布特征，为个人发展、团队建设和组织管理提供参考。</p>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        // 数据定义
+        const globalData = {
+            types: ['ISFJ', 'ESFJ', 'ISTJ', 'ISFP', 'ENFP', 'ESTJ', 'ESFP', 'INFP', 'ISTP', 'ESTP', 'INTP', 'ENTP', 'ENTJ', 'INFJ', 'INTJ'],
+            percentages: [13.8, 12.3, 11.6, 8.8, 8.1, 8.7, 7.3, 4.4, 5.4, 4.3, 3.3, 2.5, 2.7, 1.5, 2.1],
+            groups: {
+                'SJ': 46.4,
+                'SP': 27.9,
+                'NF': 15.1,
+                'NT': 10.6
+            }
+        };
+
+        const chinaData = {
+            types: ['ISFJ', 'ESFJ', 'ISTJ', 'ISFP', 'ENFP', 'ESTJ'],
+            percentages: [15.1, 13.6, 13.2, 9.2, 8.8, 9.5],
+            groups: {
+                'SJ': 54.1,
+                'SP': 23.5,
+                'NF': 16.7,
+                'NT': 5.7
+            }
+        };
+
+        let currentDataset = 'global';
+        let distributionChart = null;
+        let groupChart = null;
+
+        // 初始化图表
+        function initializeCharts() {
+            const distributionCtx = document.getElementById('distributionChart').getContext('2d');
+            const groupCtx = document.getElementById('groupChart').getContext('2d');
+
+            // 16型人格分布图
+            distributionChart = new Chart(distributionCtx, {
+                type: 'bar',
+                data: {
+                    labels: globalData.types,
+                    datasets: [{
+                        label: '人口占比 (%)',
+                        data: globalData.percentages,
+                        backgroundColor: [
+                            'rgba(79, 172, 254, 0.6)', // ISFJ - SJ
+                            'rgba(245, 87, 108, 0.6)', // ESFJ - SJ
+                            'rgba(102, 126, 234, 0.6)', // ISTJ - SJ
+                            'rgba(67, 233, 123, 0.6)', // ISFP - SP
+                            'rgba(254, 202, 87, 0.6)', // ENFP - NF
+                            'rgba(250, 112, 154, 0.6)', // ESTJ - SJ
+                            'rgba(79, 172, 254, 0.6)', // ESFP - SP
+                            'rgba(240, 147, 251, 0.6)', // INFP - NF
+                            'rgba(67, 233, 123, 0.6)', // ISTP - SP
+                            'rgba(250, 112, 154, 0.6)', // ESTP - SP
+                            'rgba(118, 75, 162, 0.6)',  // INTP - NT
+                            'rgba(245, 87, 108, 0.6)', // ENTP - NT
+                            'rgba(240, 147, 251, 0.6)', // ENTJ - NT
+                            'rgba(79, 172, 254, 0.6)', // INFJ - NF
+                            'rgba(102, 126, 234, 0.6)'  // INTJ - NT
+                        ],
+                        borderColor: [
+                            'rgba(79, 172, 254, 1)',
+                            'rgba(245, 87, 108, 1)',
+                            'rgba(102, 126, 234, 1)',
+                            'rgba(67, 233, 123, 1)',
+                            'rgba(254, 202, 87, 1)',
+                            'rgba(250, 112, 154, 1)',
+                            'rgba(79, 172, 254, 1)',
+                            'rgba(240, 147, 251, 1)',
+                            'rgba(67, 233, 123, 1)',
+                            'rgba(250, 112, 154, 1)',
+                            'rgba(118, 75, 162, 1)',
+                            'rgba(245, 87, 108, 1)',
+                            'rgba(240, 147, 251, 1)',
+                            'rgba(79, 172, 254, 1)',
+                            'rgba(102, 126, 234, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: '人口占比 (%)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+
+            // 四大类人群占比图
+            groupChart = new Chart(groupCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['守护者(SJ)', '探险家(SP)', '外交家(NF)', '分析家(NT)'],
+                    datasets: [{
+                        data: [globalData.groups.SJ, globalData.groups.SP, globalData.groups.NF, globalData.groups.NT],
+                        backgroundColor: [
+                            'rgba(79, 172, 254, 0.6)',
+                            'rgba(67, 233, 123, 0.6)',
+                            'rgba(240, 147, 251, 0.6)',
+                            'rgba(102, 126, 234, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgba(79, 172, 254, 1)',
+                            'rgba(67, 233, 123, 1)',
+                            'rgba(240, 147, 251, 1)',
+                            'rgba(102, 126, 234, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right'
+                        }
+                    }
+                }
+            });
+        }
+
+        // 切换数据集
+        function showDataset(dataset) {
+            currentDataset = dataset;
+
+            // 更新按钮状态
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // 隐藏所有数据区域
+            document.getElementById('globalData').style.display = 'none';
+            document.getElementById('chinaData').style.display = 'none';
+            document.getElementById('comparisonData').style.display = 'none';
+
+            // 根据选择显示相应数据和更新图表
+            if (dataset === 'global') {
+                document.getElementById('globalData').style.display = 'block';
+                updateCharts(globalData);
+            } else if (dataset === 'china') {
+                document.getElementById('chinaData').style.display = 'block';
+                updateCharts(chinaData);
+            } else if (dataset === 'comparison') {
+                document.getElementById('comparisonData').style.display = 'block';
+                updateChartsForComparison();
+            }
+        }
+
+        // 更新图表数据
+        function updateCharts(data) {
+            distributionChart.data.labels = data.types;
+            distributionChart.data.datasets[0].data = data.percentages;
+            distributionChart.update();
+
+            groupChart.data.datasets[0].data = [
+                data.groups.SJ,
+                data.groups.SP,
+                data.groups.NF,
+                data.groups.NT
+            ];
+            groupChart.update();
+        }
+
+        // 更新对比图表
+        function updateChartsForComparison() {
+            const comparisonTypes = ['ISFJ', 'ESFJ', 'ISTJ', 'ISFP', 'ENFP', 'ESTJ'];
+            const globalComparison = comparisonTypes.map(type => {
+                const index = globalData.types.indexOf(type);
+                return index !== -1 ? globalData.percentages[index] : 0;
+            });
+            const chinaComparison = comparisonTypes.map(type => {
+                const index = chinaData.types.indexOf(type);
+                return index !== -1 ? chinaData.percentages[index] : 0;
+            });
+
+            distributionChart.data.labels = comparisonTypes;
+            distributionChart.data.datasets = [{
+                label: '全球数据',
+                data: globalComparison,
+                backgroundColor: 'rgba(102, 126, 234, 0.6)',
+                borderColor: 'rgba(102, 126, 234, 1)',
+                borderWidth: 1
+            }, {
+                label: '中国数据',
+                data: chinaComparison,
+                backgroundColor: 'rgba(245, 158, 11, 0.6)',
+                borderColor: 'rgba(245, 158, 11, 1)',
+                borderWidth: 1
+            }];
+            distributionChart.update();
+
+            groupChart.data.datasets[0].data = [
+                chinaData.groups.SJ,
+                chinaData.groups.SP,
+                chinaData.groups.NF,
+                chinaData.groups.NT
+            ];
+            groupChart.update();
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCharts();
+        });
+    </script>
+</body>
+</html>
