@@ -182,6 +182,9 @@
         .likert-option.selected {
             border-color: #667eea;
             background: linear-gradient(45deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .likert-value {
@@ -612,14 +615,8 @@
             <button class="btn btn-primary" onclick="startQuiz()" style="margin-top: 15px;">开始测试</button>
         </div>
 
-        <div class="navigation" id="navigation" style="display: none;">
-            <button class="btn btn-secondary" id="prevBtn" onclick="previousQuestion()" disabled>
-                上一题
-            </button>
+        <div class="progress-info" id="progressInfo" style="display: none; text-align: center; margin-top: 20px; color: #666;">
             <span id="questionCounter">1 / 48</span>
-            <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>
-                下一题
-            </button>
         </div>
 
         <div class="loading" id="loading">
@@ -1103,7 +1100,7 @@
         function startQuiz() {
             // 隐藏说明，显示测试内容
             document.getElementById('instructions').style.display = 'none';
-            document.getElementById('navigation').style.display = 'flex';
+            document.getElementById('progressInfo').style.display = 'block';
             document.getElementById('quizContent').style.display = 'block';
 
             // 初始化测试
@@ -1171,8 +1168,20 @@
                 type: question.type
             };
 
-            // 启用下一题按钮
-            document.getElementById('nextBtn').disabled = false;
+            // 添加选择动画效果
+            const selectedOption = document.querySelectorAll('.likert-option')[optionIndex];
+            selectedOption.style.transform = 'scale(1.05)';
+            selectedOption.style.boxShadow = '0 8px 20px rgba(102, 126, 234, 0.3)';
+
+            // 延迟后自动进入下一题
+            setTimeout(() => {
+                if (currentQuestion < questions.length - 1) {
+                    nextQuestion();
+                } else {
+                    // 如果是最后一题，显示结果
+                    calculateResults();
+                }
+            }, 300); // 300ms延迟，让用户看到选择效果
         }
 
         // 下一题
@@ -1200,16 +1209,10 @@
             document.getElementById('questionCounter').textContent = `${currentQuestion + 1} / ${questions.length}`;
         }
 
-        // 更新导航按钮
+        // 更新进度信息
         function updateNavigation() {
-            document.getElementById('prevBtn').disabled = currentQuestion === 0;
-            document.getElementById('nextBtn').disabled = !answers[currentQuestion] || !answers[currentQuestion].value;
-
-            if (currentQuestion === questions.length - 1) {
-                document.getElementById('nextBtn').textContent = '查看结果';
-            } else {
-                document.getElementById('nextBtn').textContent = '下一题';
-            }
+            // 自动进入下一题模式下不需要手动导航控制
+            // 只更新进度显示
         }
 
         // 计算结果
@@ -1300,7 +1303,7 @@
         function restartQuiz() {
             // 隐藏结果，显示说明
             document.getElementById('resultContainer').style.display = 'none';
-            document.getElementById('navigation').style.display = 'none';
+            document.getElementById('progressInfo').style.display = 'none';
             document.getElementById('quizContent').style.display = 'none';
             document.getElementById('instructions').style.display = 'block';
         }
@@ -1331,7 +1334,7 @@
             document.getElementById('quizContent').style.display = 'none';
             document.getElementById('resultContainer').style.display = 'none';
             document.getElementById('loading').style.display = 'none';
-            document.getElementById('navigation').style.display = 'none';
+            document.getElementById('progressInfo').style.display = 'none';
             document.getElementById('instructions').style.display = 'block';
         };
     </script>
