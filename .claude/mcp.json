@@ -1,0 +1,40 @@
+{
+  "mcpServers": {
+    "web-search-prime": {
+      "type": "http",
+      "url": "https://open.bigmodel.cn/api/mcp/web_search_prime/mcp",
+      "headers": {
+        "Authorization": "a9fcd26730bb408a93b7e255c7b88a25.f3oKXpmrzedU8k1V"
+      }
+    },
+    "fetch": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "fetcher-mcp"
+      ]
+    },
+    "zai-mcp-server": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@z_ai/mcp-server"
+      ],
+      "env": {
+        "Z_AI_API_KEY": "a9fcd26730bb408a93b7e255c7b88a25.f3oKXpmrzedU8k1V",
+        "Z_AI_MODE": "ZHIPU"
+      }
+    },
+    "exa": {
+      "command": "node",
+      "args": ["/Users/tangjian/work/mcp/exa-mcp-server/.smithery/index.cjs"],
+      "env": {
+        "EXA_API_KEY": "27725a05-1caa-4b18-b6cf-14a0d1c6848c",
+        "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
+      },
+      "autoApprove": [],
+      "type": "stdio"
+    }
+  }
+}

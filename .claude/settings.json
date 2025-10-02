@@ -1,0 +1,29 @@
+{
+  "alwaysThinkingEnabled": true,
+  "permissions": {
+    "allow": ["*"],
+    "ask": [],
+    "deny": ["WebFetch"]
+  },
+  "env": {
+    "NODE_ENV": "development",
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
+    "DISABLE_TELEMETRY": "1",
+    "DISABLE_ERROR_REPORTING": "1",
+    "DISABLE_BUG_COMMAND": "0",
+    "DISABLE_COST_WARNINGS": "0",
+    "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "1",
+    "BASH_DEFAULT_TIMEOUT_MS": "30000",
+    "BASH_MAX_OUTPUT_LENGTH": "50000",
+    "MCP_TIMEOUT": "604800000",
+    "MCP_TOOL_TIMEOUT": "604800000",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "glm-4.6",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "glm-4.6",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "glm-4.6"
+  },
+  "includeCoAuthoredBy": true,
+  "cleanupPeriodDays": 30,
+  "hooks": {},
+  "outputStyle": "chinese-native",
+  "enableAllProjectMcpServers": true
+}

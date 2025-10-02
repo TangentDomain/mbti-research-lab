@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>国庆快乐 - 炫丽庆祝页面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', 'Arial', sans-serif;
+            background: linear-gradient(45deg, #ff0000, #ffeb3b, #ff0000);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+            overflow: hidden;
+            height: 100vh;
+            position: relative;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .fireworks {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .main-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 100;
+            animation: textGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes textGlow {
+            from {
+                text-shadow:
+                    0 0 10px #fff,
+                    0 0 20px #fff,
+                    0 0 30px #fff,
+                    0 0 40px #ff0080,
+                    0 0 70px #ff0080,
+                    0 0 80px #ff0080,
+                    0 0 100px #ff0080;
+            }
+            to {
+                text-shadow:
+                    0 0 5px #fff,
+                    0 0 10px #fff,
+                    0 0 15px #fff,
+                    0 0 20px #ff0000,
+                    0 0 35px #ff0000,
+                    0 0 40px #ff0000,
+                    0 0 50px #ff0000;
+            }
+        }
+
+        .celebration-text {
+            font-size: 4rem;
+            font-weight: bold;
+            color: #fff;
+            background: linear-gradient(45deg, #ff0000, #ffff00, #ff0000);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textPulse 3s ease-in-out infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes textPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .year-text {
+            font-size: 3rem;
+            color: #fff;
+            text-shadow: 0 0 20px #ff0000;
+            animation: yearFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes yearFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .star {
+            position: absolute;
+            background: #ffeb3b;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            animation: starFloat 6s linear infinite;
+            z-index: 5;
+        }
+
+        @keyframes starFloat {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .red-lantern {
+            position: absolute;
+            width: 60px;
+            height: 80px;
+            background: radial-gradient(circle, #ff0000, #cc0000);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            animation: lanternSwing 4s ease-in-out infinite;
+            z-index: 20;
+        }
+
+        .red-lantern::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 10px;
+            background: #8b0000;
+            border-radius: 50%;
+        }
+
+        .red-lantern::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(45deg, #ff0000, #ffff00);
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+        }
+
+        @keyframes lanternSwing {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            animation: confettiFall 8s linear infinite;
+            z-index: 15;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .light-beam {
+            position: absolute;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(255, 255, 0, 0.8), transparent);
+            animation: beamMove 3s linear infinite;
+            z-index: 8;
+        }
+
+        @keyframes beamMove {
+            0% {
+                left: -2px;
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                left: 100%;
+                opacity: 0;
+            }
+        }
+
+        .click-effect {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 0, 0.8), transparent);
+            animation: clickRipple 1s ease-out;
+            pointer-events: none;
+            z-index: 200;
+        }
+
+        @keyframes clickRipple {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(5);
+                opacity: 0;
+            }
+        }
+
+        .national-emblem {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            animation: emblemGlow 2s ease-in-out infinite alternate;
+            z-index: 50;
+        }
+
+        @keyframes emblemGlow {
+            from {
+                text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000;
+            }
+            to {
+                text-shadow: 0 0 20px #ffff00, 0 0 40px #ffff00;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .celebration-text {
+                font-size: 2.5rem;
+            }
+            .year-text {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="national-emblem">🇨🇳</div>
+
+    <canvas class="fireworks" id="fireworksCanvas"></canvas>
+
+    <div class="main-text">
+        <div class="celebration-text">国庆快乐</div>
+        <div class="year-text">2025</div>
+    </div>
+
+    <script>
+        // 烟花效果
+        const canvas = document.getElementById('fireworksCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        class Firework {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height;
+                this.targetY = Math.random() * canvas.height * 0.5;
+                this.speed = 2 + Math.random() * 3;
+                this.particles = [];
+                this.exploded = false;
+                this.color = `hsl(${Math.random() * 60}, 100%, 50%)`; // 红黄色系
+            }
+
+            update() {
+                if (!this.exploded) {
+                    this.y -= this.speed;
+                    if (this.y <= this.targetY) {
+                        this.explode();
+                    }
+                } else {
+                    this.particles.forEach((particle, index) => {
+                        particle.update();
+                        if (particle.alpha <= 0) {
+                            this.particles.splice(index, 1);
+                        }
+                    });
+                }
+            }
+
+            explode() {
+                this.exploded = true;
+                const particleCount = 30 + Math.random() * 20;
+                for (let i = 0; i < particleCount; i++) {
+                    this.particles.push(new Particle(this.x, this.y, this.color));
+                }
+            }
+
+            draw() {
+                if (!this.exploded) {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                } else {
+                    this.particles.forEach(particle => particle.draw());
+                }
+            }
+
+            isDead() {
+                return this.exploded && this.particles.length === 0;
+            }
+        }
+
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.vx = (Math.random() - 0.5) * 8;
+                this.vy = (Math.random() - 0.5) * 8;
+                this.alpha = 1;
+                this.color = color;
+                this.size = 2 + Math.random() * 2;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.vy += 0.1; // 重力
+                this.alpha -= 0.01;
+                this.size *= 0.98;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        const fireworks = [];
+        let frameCount = 0;
+
+        function animate() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // 每隔一段时间发射新烟花
+            if (frameCount % 30 === 0) {
+                fireworks.push(new Firework());
+            }
+
+            fireworks.forEach((firework, index) => {
+                firework.update();
+                firework.draw();
+                if (firework.isDead()) {
+                    fireworks.splice(index, 1);
+                }
+            });
+
+            frameCount++;
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        // 创建星星
+        function createStars() {
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const star = document.createElement('div');
+                    star.className = 'star';
+                    star.style.width = Math.random() * 20 + 10 + 'px';
+                    star.style.height = star.style.width;
+                    star.style.left = Math.random() * window.innerWidth + 'px';
+                    star.style.animationDelay = Math.random() * 6 + 's';
+                    star.style.animationDuration = (6 + Math.random() * 4) + 's';
+                    document.body.appendChild(star);
+
+                    setTimeout(() => star.remove(), 10000);
+                }, i * 800);
+            }
+        }
+
+        // 创建灯笼
+        function createLanterns() {
+            for (let i = 0; i < 8; i++) {
+                const lantern = document.createElement('div');
+                lantern.className = 'red-lantern';
+                lantern.style.left = Math.random() * window.innerWidth + 'px';
+                lantern.style.top = Math.random() * window.innerHeight * 0.5 + 'px';
+                lantern.style.animationDelay = Math.random() * 4 + 's';
+                document.body.appendChild(lantern);
+            }
+        }
+
+        // 创建彩纸
+        function createConfetti() {
+            const colors = ['#ff0000', '#ffff00', '#ff00ff', '#00ff00', '#0000ff'];
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * window.innerWidth + 'px';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDelay = Math.random() * 8 + 's';
+                    confetti.style.animationDuration = (6 + Math.random() * 4) + 's';
+                    document.body.appendChild(confetti);
+
+                    setTimeout(() => confetti.remove(), 10000);
+                }, i * 200);
+            }
+        }
+
+        // 创建光束
+        function createLightBeams() {
+            for (let i = 0; i < 10; i++) {
+                const beam = document.createElement('div');
+                beam.className = 'light-beam';
+                beam.style.animationDelay = i * 0.3 + 's';
+                beam.style.animationDuration = (2 + Math.random() * 2) + 's';
+                document.body.appendChild(beam);
+            }
+        }
+
+        // 点击效果
+        document.addEventListener('click', (e) => {
+            const effect = document.createElement('div');
+            effect.className = 'click-effect';
+            effect.style.left = (e.clientX - 50) + 'px';
+            effect.style.top = (e.clientY - 50) + 'px';
+            document.body.appendChild(effect);
+
+            // 创建额外的烟花
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => {
+                    const firework = new Firework();
+                    firework.x = e.clientX;
+                    fireworks.push(firework);
+                }, i * 100);
+            }
+
+            setTimeout(() => effect.remove(), 1000);
+        });
+
+        // 初始化所有效果
+        createStars();
+        createLanterns();
+        createConfetti();
+        createLightBeams();
+
+        // 定期重复效果
+        setInterval(createStars, 12000);
+        setInterval(createConfetti, 8000);
+
+        // 窗口大小调整
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // 播放庆祝音效（如果需要）
+        function playSound() {
+            const audio = new Audio();
+            audio.volume = 0.3;
+            // 这里可以添加音效URL
+        }
+
+        // 自动播放音效（用户交互后）
+        document.addEventListener('click', playSound, { once: true });
+    </script>
+</body>
+</html>

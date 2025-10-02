@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBTI 16型人格多维度能力分析</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --accent-color: #f093fb;
+            --text-dark: #2d3748;
+            --text-light: #718096;
+            --bg-light: #f7fafc;
+            --bg-white: #ffffff;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+            --shadow-xl: 0 20px 25px rgba(0,0,0,0.1);
+            --border-radius: 16px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--text-dark);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.03"><path d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/></g></g></svg>') repeat;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: white;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .personality-selector {
+            background: var(--bg-white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-xl);
+            height: fit-content;
+            position: sticky;
+            top: 2rem;
+        }
+
+        .personality-groups {
+            margin-bottom: 2rem;
+        }
+
+        .group-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .personality-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+        }
+
+        .personality-btn {
+            padding: 0.75rem 1rem;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            background: var(--bg-light);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.9rem;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .personality-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .personality-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .personality-btn.active {
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        .personality-btn.active::before {
+            opacity: 1;
+        }
+
+        .personality-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .visualization-area {
+            background: var(--bg-white);
+            border-radius: var(--border-radius);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .personality-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--bg-light);
+        }
+
+        .personality-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .personality-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .personality-name h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .personality-subtitle {
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        .overall-score {
+            text-align: center;
+            padding: 1rem;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            border-radius: 16px;
+            color: white;
+        }
+
+        .score-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .score-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .radar-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .radar-chart-wrapper {
+            position: relative;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        canvas {
+            max-width: 100%;
+            height: auto !important;
+        }
+
+        .dimensions-list {
+            background: var(--bg-light);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        .dimension-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .dimension-item:last-child {
+            border-bottom: none;
+        }
+
+        .dimension-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .dimension-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dimension-name {
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .dimension-score {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .score-bar {
+            width: 100px;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .score-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 4px;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .score-text {
+            font-weight: 600;
+            color: var(--primary-color);
+            min-width: 30px;
+            text-align: right;
+        }
+
+        .comparison-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid var(--bg-light);
+        }
+
+        .comparison-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .comparison-item {
+            background: var(--bg-light);
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .comparison-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .comparison-personality {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .comparison-score {
+            font-size: 1.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .personality-selector {
+                position: static;
+            }
+
+            .radar-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .personality-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 400px;
+            color: var(--text-light);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .loading {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>MBTI 16型人格多维度能力分析</h1>
+            <p class="subtitle">探索每种人格类型的独特优势与能力分布</p>
+        </header>
+
+        <div class="main-content">
+            <aside class="personality-selector">
+                <div class="personality-groups">
+                    <div class="group-title">分析家 (NT)</div>
+                    <div class="personality-grid">
+                        <button class="personality-btn active" data-type="INTJ"><span>INTJ</span></button>
+                        <button class="personality-btn" data-type="INTP"><span>INTP</span></button>
+                        <button class="personality-btn" data-type="ENTJ"><span>ENTJ</span></button>
+                        <button class="personality-btn" data-type="ENTP"><span>ENTP</span></button>
+                    </div>
+                </div>
+
+                <div class="personality-groups">
+                    <div class="group-title">外交家 (NF)</div>
+                    <div class="personality-grid">
+                        <button class="personality-btn" data-type="INFJ"><span>INFJ</span></button>
+                        <button class="personality-btn" data-type="INFP"><span>INFP</span></button>
+                        <button class="personality-btn" data-type="ENFJ"><span>ENFJ</span></button>
+                        <button class="personality-btn" data-type="ENFP"><span>ENFP</span></button>
+                    </div>
+                </div>
+
+                <div class="personality-groups">
+                    <div class="group-title">守护者 (SJ)</div>
+                    <div class="personality-grid">
+                        <button class="personality-btn" data-type="ISTJ"><span>ISTJ</span></button>
+                        <button class="personality-btn" data-type="ISFJ"><span>ISFJ</span></button>
+                        <button class="personality-btn" data-type="ESTJ"><span>ESTJ</span></button>
+                        <button class="personality-btn" data-type="ESFJ"><span>ESFJ</span></button>
+                    </div>
+                </div>
+
+                <div class="personality-groups">
+                    <div class="group-title">探险家 (SP)</div>
+                    <div class="personality-grid">
+                        <button class="personality-btn" data-type="ISTP"><span>ISTP</span></button>
+                        <button class="personality-btn" data-type="ISFP"><span>ISFP</span></button>
+                        <button class="personality-btn" data-type="ESTP"><span>ESTP</span></button>
+                        <button class="personality-btn" data-type="ESFP"><span>ESFP</span></button>
+                    </div>
+                </div>
+            </aside>
+
+            <main class="visualization-area">
+                <div class="personality-header">
+                    <div class="personality-title">
+                        <div class="personality-icon">INTJ</div>
+                        <div class="personality-name">
+                            <h2>建筑师</h2>
+                            <p class="personality-subtitle">理性的战略家，追求完美与创新</p>
+                        </div>
+                    </div>
+                    <div class="overall-score">
+                        <div class="score-label">综合能力指数</div>
+                        <div class="score-value">87</div>
+                    </div>
+                </div>
+
+                <div class="radar-container">
+                    <div class="radar-chart-wrapper">
+                        <canvas id="radarChart" width="400" height="400"></canvas>
+                    </div>
+                    <div class="dimensions-list">
+                        <div class="dimension-item">
+                            <div class="dimension-info">
+                                <div class="dimension-color" style="background: #667eea;"></div>
+                                <div class="dimension-name">领导力</div>
+                            </div>
+                            <div class="dimension-score">
+                                <div class="score-bar">
+                                    <div class="score-fill" style="width: 85%;"></div>
+                                </div>
+                                <div class="score-text">85</div>
+                            </div>
+                        </div>
+                        <div class="dimension-item">
+                            <div class="dimension-info">
+                                <div class="dimension-color" style="background: #f093fb;"></div>
+                                <div class="dimension-name">创造力</div>
+                            </div>
+                            <div class="dimension-score">
+                                <div class="score-bar">
+                                    <div class="score-fill" style="width: 92%;"></div>
+                                </div>
+                                <div class="score-text">92</div>
+                            </div>
+                        </div>
+                        <div class="dimension-item">
+                            <div class="dimension-info">
+                                <div class="dimension-color" style="background: #4facfe;"></div>
+                                <div class="dimension-name">分析力</div>
+                            </div>
+                            <div class="dimension-score">
+                                <div class="score-bar">
+                                    <div class="score-fill" style="width: 96%;"></div>
+                                </div>
+                                <div class="score-text">96</div>
+                            </div>
+                        </div>
+                        <div class="dimension-item">
+                            <div class="dimension-info">
+                                <div class="dimension-color" style="background: #43e97b;"></div>
+                                <div class="dimension-name">执行力</div>
+                            </div>
+                            <div class="dimension-score">
+                                <div class="score-bar">
+                                    <div class="score-fill" style="width: 88%;"></div>
+                                </div>
+                                <div class="score-text">88</div>
+                            </div>
+                        </div>
+                        <div class="dimension-item">
+                            <div class="dimension-info">
+                                <div class="dimension-color" style="background: #fa709a;"></div>
+                                <div class="dimension-name">沟通力</div>
+                            </div>
+                            <div class="dimension-score">
+                                <div class="score-bar">
+                                    <div class="score-fill" style="width: 72%;"></div>
+                                </div>
+                                <div class="score-text">72</div>
+                            </div>
+                        </div>
+                        <div class="dimension-item">
+                            <div class="dimension-info">
+                                <div class="dimension-color" style="background: #feca57;"></div>
+                                <div class="dimension-name">适应力</div>
+                            </div>
+                            <div class="dimension-score">
+                                <div class="score-bar">
+                                    <div class="score-fill" style="width: 78%;"></div>
+                                </div>
+                                <div class="score-text">78</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-section">
+                    <h3 class="comparison-title">同类型人格对比</h3>
+                    <div class="comparison-grid" id="comparisonGrid">
+                        <!-- 动态生成 -->
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // MBTI人格数据
+        const personalityData = {
+            'INTJ': {
+                name: '建筑师',
+                subtitle: '理性的战略家，追求完美与创新',
+                overallScore: 87,
+                dimensions: {
+                    '领导力': 85,
+                    '创造力': 92,
+                    '分析力': 96,
+                    '执行力': 88,
+                    '沟通力': 72,
+                    '适应力': 78
+                },
+                color: 'rgba(102, 126, 234, 0.2)',
+                borderColor: 'rgb(102, 126, 234)'
+            },
+            'INTP': {
+                name: '逻辑学家',
+                subtitle: '创新的思想家，追求知识与真理',
+                overallScore: 84,
+                dimensions: {
+                    '领导力': 68,
+                    '创造力': 94,
+                    '分析力': 98,
+                    '执行力': 65,
+                    '沟通力': 70,
+                    '适应力': 82
+                },
+                color: 'rgba(118, 75, 162, 0.2)',
+                borderColor: 'rgb(118, 75, 162)'
+            },
+            'ENTJ': {
+                name: '指挥官',
+                subtitle: '天生的领导者，目标导向的决策者',
+                overallScore: 91,
+                dimensions: {
+                    '领导力': 96,
+                    '创造力': 82,
+                    '分析力': 90,
+                    '执行力': 94,
+                    '沟通力': 85,
+                    '适应力': 88
+                },
+                color: 'rgba(240, 147, 251, 0.2)',
+                borderColor: 'rgb(240, 147, 251)'
+            },
+            'ENTP': {
+                name: '辩论家',
+                subtitle: '聪明的创新者，喜欢挑战与辩论',
+                overallScore: 86,
+                dimensions: {
+                    '领导力': 78,
+                    '创造力': 96,
+                    '分析力': 88,
+                    '执行力': 75,
+                    '沟通力': 92,
+                    '适应力': 90
+                },
+                color: 'rgba(245, 87, 108, 0.2)',
+                borderColor: 'rgb(245, 87, 108)'
+            },
+            'INFJ': {
+                name: '提倡者',
+                subtitle: '安静的理想主义者，富有同理心',
+                overallScore: 85,
+                dimensions: {
+                    '领导力': 82,
+                    '创造力': 88,
+                    '分析力': 85,
+                    '执行力': 78,
+                    '沟通力': 86,
+                    '适应力': 80
+                },
+                color: 'rgba(79, 172, 254, 0.2)',
+                borderColor: 'rgb(79, 172, 254)'
+            },
+            'INFP': {
+                name: '调停者',
+                subtitle: '和谐的追求者，价值观驱动',
+                overallScore: 82,
+                dimensions: {
+                    '领导力': 70,
+                    '创造力': 90,
+                    '分析力': 75,
+                    '执行力': 68,
+                    '沟通力': 84,
+                    '适应力': 85
+                },
+                color: 'rgba(67, 233, 123, 0.2)',
+                borderColor: 'rgb(67, 233, 123)'
+            },
+            'ENFJ': {
+                name: '主人公',
+                subtitle: '天生的激励者，关心他人成长',
+                overallScore: 88,
+                dimensions: {
+                    '领导力': 92,
+                    '创造力': 85,
+                    '分析力': 80,
+                    '执行力': 86,
+                    '沟通力': 94,
+                    '适应力': 83
+                },
+                color: 'rgba(250, 112, 154, 0.2)',
+                borderColor: 'rgb(250, 112, 154)'
+            },
+            'ENFP': {
+                name: '竞选者',
+                subtitle: '热情的鼓励者，追求可能性',
+                overallScore: 86,
+                dimensions: {
+                    '领导力': 80,
+                    '创造力': 93,
+                    '分析力': 72,
+                    '执行力': 75,
+                    '沟通力': 92,
+                    '适应力': 88
+                },
+                color: 'rgba(254, 202, 87, 0.2)',
+                borderColor: 'rgb(254, 202, 87)'
+            },
+            'ISTJ': {
+                name: '物流师',
+                subtitle: '可靠的实务家，注重事实与细节',
+                overallScore: 83,
+                dimensions: {
+                    '领导力': 75,
+                    '创造力': 65,
+                    '分析力': 85,
+                    '执行力': 92,
+                    '沟通力': 70,
+                    '适应力': 72
+                },
+                color: 'rgba(102, 126, 234, 0.2)',
+                borderColor: 'rgb(102, 126, 234)'
+            },
+            'ISFJ': {
+                name: '守护者',
+                subtitle: '温暖的守护者，专注服务他人',
+                overallScore: 84,
+                dimensions: {
+                    '领导力': 73,
+                    '创造力': 70,
+                    '分析力': 78,
+                    '执行力': 88,
+                    '沟通力': 85,
+                    '适应力': 78
+                },
+                color: 'rgba(118, 75, 162, 0.2)',
+                borderColor: 'rgb(118, 75, 162)'
+            },
+            'ESTJ': {
+                name: '总经理',
+                subtitle: '高效的管理者，重视秩序与规则',
+                overallScore: 86,
+                dimensions: {
+                    '领导力': 88,
+                    '创造力': 68,
+                    '分析力': 82,
+                    '执行力': 94,
+                    '沟通力': 78,
+                    '适应力': 75
+                },
+                color: 'rgba(240, 147, 251, 0.2)',
+                borderColor: 'rgb(240, 147, 251)'
+            },
+            'ESFJ': {
+                name: '执政官',
+                subtitle: '和谐的支持者，关注他人需求',
+                overallScore: 85,
+                dimensions: {
+                    '领导力': 82,
+                    '创造力': 72,
+                    '分析力': 75,
+                    '执行力': 88,
+                    '沟通力': 90,
+                    '适应力': 80
+                },
+                color: 'rgba(245, 87, 108, 0.2)',
+                borderColor: 'rgb(245, 87, 108)'
+            },
+            'ISTP': {
+                name: '鉴赏家',
+                subtitle: '灵活的实践者，善于使用工具',
+                overallScore: 82,
+                dimensions: {
+                    '领导力': 70,
+                    '创造力': 78,
+                    '分析力': 85,
+                    '执行力': 82,
+                    '沟通力': 65,
+                    '适应力': 92
+                },
+                color: 'rgba(79, 172, 254, 0.2)',
+                borderColor: 'rgb(79, 172, 254)'
+            },
+            'ISFP': {
+                name: '冒险家',
+                subtitle: '灵活的艺术家，追求美感与自由',
+                overallScore: 80,
+                dimensions: {
+                    '领导力': 65,
+                    '创造力': 85,
+                    '分析力': 70,
+                    '执行力': 75,
+                    '沟通力': 72,
+                    '适应力': 88
+                },
+                color: 'rgba(67, 233, 123, 0.2)',
+                borderColor: 'rgb(67, 233, 123)'
+            },
+            'ESTP': {
+                name: '企业家',
+                subtitle: '精明的实践者，善于应对危机',
+                overallScore: 84,
+                dimensions: {
+                    '领导力': 78,
+                    '创造力': 75,
+                    '分析力': 80,
+                    '执行力': 86,
+                    '沟通力': 85,
+                    '适应力': 94
+                },
+                color: 'rgba(250, 112, 154, 0.2)',
+                borderColor: 'rgb(250, 112, 154)'
+            },
+            'ESFP': {
+                name: '表演者',
+                subtitle: '活泼的娱乐者，带来欢乐与活力',
+                overallScore: 82,
+                dimensions: {
+                    '领导力': 72,
+                    '创造力': 80,
+                    '分析力': 68,
+                    '执行力': 75,
+                    '沟通力': 92,
+                    '适应力': 90
+                },
+                color: 'rgba(254, 202, 87, 0.2)',
+                borderColor: 'rgb(254, 202, 87)'
+            }
+        };
+
+        let currentPersonality = 'INTJ';
+        let radarChart = null;
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeChart();
+            attachEventListeners();
+            updateVisualization(currentPersonality);
+        });
+
+        function initializeChart() {
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            radarChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: '能力值',
+                        data: [],
+                        backgroundColor: 'rgba(102, 126, 234, 0.2)',
+                        borderColor: 'rgb(102, 126, 234)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgb(102, 126, 234)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(102, 126, 234)',
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                stepSize: 20,
+                                font: {
+                                    size: 11
+                                },
+                                color: '#718096'
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            },
+                            pointLabels: {
+                                font: {
+                                    size: 13,
+                                    weight: '500'
+                                },
+                                color: '#2d3748'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleFont: {
+                                size: 14,
+                                weight: '600'
+                            },
+                            bodyFont: {
+                                size: 13
+                            },
+                            padding: 12,
+                            cornerRadius: 8,
+                            displayColors: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': ' + context.parsed.r + ' 分';
+                                }
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 800,
+                        easing: 'easeInOutQuart'
+                    }
+                }
+            });
+        }
+
+        function attachEventListeners() {
+            const buttons = document.querySelectorAll('.personality-btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', function() {
+                    buttons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    currentPersonality = this.dataset.type;
+                    updateVisualization(currentPersonality);
+                });
+            });
+        }
+
+        function updateVisualization(personalityType) {
+            const data = personalityData[personalityType];
+
+            // 更新标题信息
+            document.querySelector('.personality-icon').textContent = personalityType;
+            document.querySelector('.personality-name h2').textContent = data.name;
+            document.querySelector('.personality-subtitle').textContent = data.subtitle;
+            document.querySelector('.score-value').textContent = data.overallScore;
+
+            // 更新雷达图
+            updateRadarChart(data);
+
+            // 更新维度列表
+            updateDimensionsList(data);
+
+            // 更新对比数据
+            updateComparisonData(personalityType);
+        }
+
+        function updateRadarChart(data) {
+            const labels = Object.keys(data.dimensions);
+            const values = Object.values(data.dimensions);
+
+            radarChart.data.labels = labels;
+            radarChart.data.datasets[0].data = values;
+            radarChart.data.datasets[0].backgroundColor = data.color;
+            radarChart.data.datasets[0].borderColor = data.borderColor;
+            radarChart.data.datasets[0].pointBackgroundColor = data.borderColor;
+            radarChart.data.datasets[0].pointHoverBorderColor = data.borderColor;
+
+            radarChart.update('active');
+        }
+
+        function updateDimensionsList(data) {
+            const container = document.querySelector('.dimensions-list');
+            const dimensionColors = ['#667eea', '#f093fb', '#4facfe', '#43e97b', '#fa709a', '#feca57'];
+
+            let html = '';
+            let colorIndex = 0;
+
+            for (const [dimension, score] of Object.entries(data.dimensions)) {
+                html += `
+                    <div class="dimension-item">
+                        <div class="dimension-info">
+                            <div class="dimension-color" style="background: ${dimensionColors[colorIndex]};"></div>
+                            <div class="dimension-name">${dimension}</div>
+                        </div>
+                        <div class="dimension-score">
+                            <div class="score-bar">
+                                <div class="score-fill" style="width: 0%;" data-width="${score}%"></div>
+                            </div>
+                            <div class="score-text">${score}</div>
+                        </div>
+                    </div>
+                `;
+                colorIndex = (colorIndex + 1) % dimensionColors.length;
+            }
+
+            container.innerHTML = html;
+
+            // 动画效果
+            setTimeout(() => {
+                const fills = container.querySelectorAll('.score-fill');
+                fills.forEach(fill => {
+                    fill.style.width = fill.dataset.width;
+                });
+            }, 100);
+        }
+
+        function updateComparisonData(currentType) {
+            const container = document.getElementById('comparisonGrid');
+            const currentGroup = getCurrentGroup(currentType);
+            const groupTypes = getGroupTypes(currentGroup);
+
+            let html = '';
+            groupTypes.forEach(type => {
+                if (type !== currentType) {
+                    const data = personalityData[type];
+                    html += `
+                        <div class="comparison-item" onclick="selectPersonality('${type}')">
+                            <div class="comparison-personality">${type} - ${data.name}</div>
+                            <div class="comparison-score">${data.overallScore}</div>
+                        </div>
+                    `;
+                }
+            });
+
+            container.innerHTML = html;
+        }
+
+        function getCurrentGroup(type) {
+            if (['INTJ', 'INTP', 'ENTJ', 'ENTP'].includes(type)) return 'NT';
+            if (['INFJ', 'INFP', 'ENFJ', 'ENFP'].includes(type)) return 'NF';
+            if (['ISTJ', 'ISFJ', 'ESTJ', 'ESFJ'].includes(type)) return 'SJ';
+            if (['ISTP', 'ISFP', 'ESTP', 'ESFP'].includes(type)) return 'SP';
+        }
+
+        function getGroupTypes(group) {
+            const groups = {
+                'NT': ['INTJ', 'INTP', 'ENTJ', 'ENTP'],
+                'NF': ['INFJ', 'INFP', 'ENFJ', 'ENFP'],
+                'SJ': ['ISTJ', 'ISFJ', 'ESTJ', 'ESFJ'],
+                'SP': ['ISTP', 'ISFP', 'ESTP', 'ESFP']
+            };
+            return groups[group];
+        }
+
+        function selectPersonality(type) {
+            currentPersonality = type;
+
+            // 更新按钮状态
+            const buttons = document.querySelectorAll('.personality-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.type === type) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // 更新可视化
+            updateVisualization(type);
+
+            // 滚动到顶部
+            document.querySelector('.visualization-area').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    </script>
+</body>
+</html>

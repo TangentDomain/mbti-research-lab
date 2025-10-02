@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INTJ vs ENTJ 对比分析</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --intj-color: #667eea;
+            --entj-color: #f093fb;
+            --text-dark: #2d3748;
+            --text-light: #718096;
+            --bg-light: #f7fafc;
+            --bg-white: #ffffff;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+            --shadow-xl: 0 20px 25px rgba(0,0,0,0.1);
+            --border-radius: 16px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--text-dark);
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.03"><path d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/></g></g></svg>') repeat;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: white;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .personality-card {
+            background: var(--bg-white);
+            border-radius: var(--border-radius);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-xl);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .personality-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+        }
+
+        .intj-card::before {
+            background: linear-gradient(90deg, var(--intj-color), #764ba2);
+        }
+
+        .entj-card::before {
+            background: linear-gradient(90deg, var(--entj-color), #f5576c);
+        }
+
+        .personality-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .personality-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 700;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .intj-card .personality-icon {
+            background: linear-gradient(135deg, var(--intj-color), #764ba2);
+        }
+
+        .entj-card .personality-icon {
+            background: linear-gradient(135deg, var(--entj-color), #f5576c);
+        }
+
+        .personality-info h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .personality-subtitle {
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        .intj-card .personality-info h2 {
+            color: var(--intj-color);
+        }
+
+        .entj-card .personality-info h2 {
+            color: var(--entj-color);
+        }
+
+        .traits-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .traits-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .trait-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .trait-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .intj-card .trait-icon {
+            background: var(--intj-color);
+        }
+
+        .entj-card .trait-icon {
+            background: var(--entj-color);
+        }
+
+        .trait-text {
+            flex: 1;
+            line-height: 1.5;
+            color: var(--text-dark);
+        }
+
+        .comparison-section {
+            background: var(--bg-white);
+            border-radius: var(--border-radius);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-xl);
+            margin-bottom: 2rem;
+        }
+
+        .comparison-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: var(--text-dark);
+        }
+
+        .radar-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .radar-container {
+            position: relative;
+            height: 350px;
+        }
+
+        .dimensions-comparison {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .dimension-row {
+            background: var(--bg-light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 120px 1fr 200px 100px;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .dimension-name {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .dimension-bars {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .bar-container {
+            flex: 1;
+            height: 12px;
+            background: #e2e8f0;
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .intj-bar {
+            background: linear-gradient(90deg, var(--intj-color), #764ba2);
+        }
+
+        .entj-bar {
+            background: linear-gradient(90deg, var(--entj-color), #f5576c);
+        }
+
+        .dimension-scores {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .score-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .intj-score {
+            background: rgba(102, 126, 234, 0.1);
+            color: var(--intj-color);
+        }
+
+        .entj-score {
+            background: rgba(240, 147, 251, 0.1);
+            color: var(--entj-color);
+        }
+
+        .key-differences {
+            background: var(--bg-white);
+            border-radius: var(--border-radius);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .differences-grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .difference-item {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .difference-aspect {
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid;
+        }
+
+        .intj-aspect {
+            background: rgba(102, 126, 234, 0.05);
+            border-left-color: var(--intj-color);
+        }
+
+        .entj-aspect {
+            background: rgba(240, 147, 251, 0.05);
+            border-left-color: var(--entj-color);
+        }
+
+        .aspect-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .intj-aspect .aspect-title {
+            color: var(--intj-color);
+        }
+
+        .entj-aspect .aspect-title {
+            color: var(--entj-color);
+        }
+
+        .aspect-description {
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .compatibility-section {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1));
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .compatibility-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .compatibility-score {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--intj-color), var(--entj-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .compatibility-description {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        @media (max-width: 1024px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .radar-comparison {
+                grid-template-columns: 1fr;
+            }
+
+            .dimension-row {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+
+            .difference-item {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .personality-card {
+                padding: 1.5rem;
+            }
+
+            .personality-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>INTJ vs ENTJ 深度对比分析</h1>
+            <p class="subtitle">探索建筑师与指挥官的核心差异与互补优势</p>
+        </header>
+
+        <div class="comparison-grid">
+            <div class="personality-card intj-card">
+                <div class="personality-header">
+                    <div class="personality-icon">INTJ</div>
+                    <div class="personality-info">
+                        <h2>建筑师</h2>
+                        <p class="personality-subtitle">内向 • 直觉 • 思考 • 判断</p>
+                    </div>
+                </div>
+
+                <div class="traits-section">
+                    <h3 class="section-title">核心特征</h3>
+                    <div class="traits-list">
+                        <div class="trait-item">
+                            <div class="trait-icon">🧠</div>
+                            <div class="trait-text">
+                                <strong>深度思考者</strong> - 喜欢独立思考，追求知识深度
+                            </div>
+                        </div>
+                        <div class="trait-item">
+                            <div class="trait-icon">🎯</div>
+                            <div class="trait-text">
+                                <strong>战略规划</strong> - 擅长远见规划，注重系统性
+                            </div>
+                        </div>
+                        <div class="trait-item">
+                            <div class="trait-icon">💡</div>
+                            <div class="trait-text">
+                                <strong>创新思维</strong> - 突破常规，寻找创新解决方案
+                            </div>
+                        </div>
+                        <div class="trait-item">
+                            <div class="trait-icon">📊</div>
+                            <div class="trait-text">
+                                <strong>完美主义</strong> - 追求高质量，注重细节精度
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="traits-section">
+                    <h3 class="section-title">工作风格</h3>
+                    <div class="traits-list">
+                        <div class="trait-item">
+                            <div class="trait-icon">🔍</div>
+                            <div class="trait-text">
+                                偏好独立工作，需要安静专注的环境
+                            </div>
+                        </div>
+                        <div class="trait-item">
+                            <div class="trait-icon">📝</div>
+                            <div class="trait-text">
+                                重视规划和准备，行动前充分思考
+                            </div>
+                        </div>
+                        <div class="trait-item">
+                            <div class="trait-icon">🎓</div>
+                            <div class="trait-text">
+                                持续学习，不断更新知识体系
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="personality-card entj-card">
+                <div class="personality-header">
+                    <div class="personality-icon">ENTJ</div>
+                    <div class="personality-info">
+                        <h2>指挥官</h2>
+                        <p class="personality-subtitle">外向 • 直觉 • 思考 • 判断</p>
+                    </div>
+                </div>
+
+                <div class="traits-section">
+                    <h3 class="section-title">核心特征</h3>
+                    <div class="traits-list">
+                        <div class="trait-item">
+                            <div class="trait-icon">👑</div>
+                            <div class="trait-text">
+                                <strong>天生领导者</strong> - 具备强大的领导力和影响力
+                            </div>
+                        </div>
+                        <div class="trait-item">
+                            <div class="trait-icon">⚡</div>
+                            <div class="trait-text">
+                                <strong>高效执行</strong> - 行动力强，注重结果导向
+                            </div>
+                        </div>
+                        <div class="trait-item">
+                            <div class="trait-icon">🗣️</div>
+                            <div class="trait-text">
+                                <strong>果断决策</strong> - 快速分析，迅速做出决策
+                            </div>
+                        </div>
+                        <div class="trait-item">
+                            <div class="trait-icon">🎯</div>
+                            <div class="trait-text">
+                                <strong>目标驱动</strong> - 专注目标，不轻易被干扰
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="traits-section">
+                    <h3 class="section-title">工作风格</h3>
+                    <div class="traits-list">
+                        <div class="trait-item">
+                            <div class="trait-icon">👥</div>
+                            <div class="trait-text">
+                                喜欢团队合作，善于激励和组织他人
+                            </div>
+                        </div>
+                        <div class="trait-item">
+                            <div class="trait-icon">🚀</div>
+                            <div class="trait-text">
+                                快速行动，在实践中不断调整优化
+                            </div>
+                        </div>
+                        <div class="trait-item">
+                            <div class="trait-icon">📈</div>
+                            <div class="trait-text">
+                                关注效率和成果，追求最大化影响力
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="comparison-section">
+            <h2 class="comparison-title">能力维度对比</h2>
+
+            <div class="radar-comparison">
+                <div class="radar-container">
+                    <canvas id="intjRadar"></canvas>
+                </div>
+                <div class="radar-container">
+                    <canvas id="entjRadar"></canvas>
+                </div>
+            </div>
+
+            <div class="dimensions-comparison">
+                <div class="dimension-row">
+                    <div class="dimension-name">战略洞察</div>
+                    <div class="dimension-bars">
+                        <div class="bar-container">
+                            <div class="bar-fill intj-bar" style="width: 98%;"></div>
+                        </div>
+                        <div class="bar-container">
+                            <div class="bar-fill entj-bar" style="width: 85%;"></div>
+                        </div>
+                    </div>
+                    <div class="dimension-scores">
+                        <span class="score-badge intj-score">INTJ: 98</span>
+                        <span class="score-badge entj-score">ENTJ: 85</span>
+                    </div>
+                </div>
+
+                <div class="dimension-row">
+                    <div class="dimension-name">执行能力</div>
+                    <div class="dimension-bars">
+                        <div class="bar-container">
+                            <div class="bar-fill intj-bar" style="width: 75%;"></div>
+                        </div>
+                        <div class="bar-container">
+                            <div class="bar-fill entj-bar" style="width: 95%;"></div>
+                        </div>
+                    </div>
+                    <div class="dimension-scores">
+                        <span class="score-badge intj-score">INTJ: 75</span>
+                        <span class="score-badge entj-score">ENTJ: 95</span>
+                    </div>
+                </div>
+
+                <div class="dimension-row">
+                    <div class="dimension-name">创新思维</div>
+                    <div class="dimension-bars">
+                        <div class="bar-container">
+                            <div class="bar-fill intj-bar" style="width: 96%;"></div>
+                        </div>
+                        <div class="bar-container">
+                            <div class="bar-fill entj-bar" style="width: 82%;"></div>
+                        </div>
+                    </div>
+                    <div class="dimension-scores">
+                        <span class="score-badge intj-score">INTJ: 96</span>
+                        <span class="score-badge entj-score">ENTJ: 82</span>
+                    </div>
+                </div>
+
+                <div class="dimension-row">
+                    <div class="dimension-name">团队领导</div>
+                    <div class="dimension-bars">
+                        <div class="bar-container">
+                            <div class="bar-fill intj-bar" style="width: 82%;"></div>
+                        </div>
+                        <div class="bar-container">
+                            <div class="bar-fill entj-bar" style="width: 94%;"></div>
+                        </div>
+                    </div>
+                    <div class="dimension-scores">
+                        <span class="score-badge intj-score">INTJ: 82</span>
+                        <span class="score-badge entj-score">ENTJ: 94</span>
+                    </div>
+                </div>
+
+                <div class="dimension-row">
+                    <div class="dimension-name">分析深度</div>
+                    <div class="dimension-bars">
+                        <div class="bar-container">
+                            <div class="bar-fill intj-bar" style="width: 95%;"></div>
+                        </div>
+                        <div class="bar-container">
+                            <div class="bar-fill entj-bar" style="width: 88%;"></div>
+                        </div>
+                    </div>
+                    <div class="dimension-scores">
+                        <span class="score-badge intj-score">INTJ: 95</span>
+                        <span class="score-badge entj-score">ENTJ: 88</span>
+                    </div>
+                </div>
+
+                <div class="dimension-row">
+                    <div class="dimension-name">环境适应</div>
+                    <div class="dimension-bars">
+                        <div class="bar-container">
+                            <div class="bar-fill intj-bar" style="width: 70%;"></div>
+                        </div>
+                        <div class="bar-container">
+                            <div class="bar-fill entj-bar" style="width: 90%;"></div>
+                        </div>
+                    </div>
+                    <div class="dimension-scores">
+                        <span class="score-badge intj-score">INTJ: 70</span>
+                        <span class="score-badge entj-score">ENTJ: 90</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="key-differences">
+            <h2 class="comparison-title">核心差异分析</h2>
+
+            <div class="differences-grid">
+                <div class="difference-item">
+                    <div class="difference-aspect intj-aspect">
+                        <div class="aspect-title">能量来源</div>
+                        <div class="aspect-description">
+                            INTJ从独处和深度思考中获得能量，偏好安静的工作环境，需要时间来处理信息和制定策略。他们在独立工作时效率最高，过度的社交互动会消耗他们的精力。
+                        </div>
+                    </div>
+                    <div class="difference-aspect entj-aspect">
+                        <div class="aspect-title">能量来源</div>
+                        <div class="aspect-description">
+                            ENTJ从与他人的互动和外部环境中获得能量，喜欢活跃的工作氛围。通过讨论、辩论和协作来激发思维，社交互动让他们更有活力和创造力。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="difference-item">
+                    <div class="difference-aspect intj-aspect">
+                        <div class="aspect-title">决策方式</div>
+                        <div class="aspect-description">
+                            INTJ倾向于深入分析所有可能性和后果，制定详细的长期计划。他们重视理论框架和系统思维，在决策前会进行充分的研究和准备。
+                        </div>
+                    </div>
+                    <div class="difference-aspect entj-aspect">
+                        <div class="aspect-title">决策方式</div>
+                        <div class="aspect-description">
+                            ENTJ更倾向于快速分析和果断行动，注重效率和结果。他们愿意承担经过计算的风险，在实践中不断调整策略，适合快速变化的商业环境。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="difference-item">
+                    <div class="difference-aspect intj-aspect">
+                        <div class="aspect-title">领导风格</div>
+                        <div class="aspect-description">
+                            INTJ是愿景型领导者，通过智慧和远见来影响他人。他们更喜欢在幕后制定策略，通过提供清晰的方向和创新方案来领导团队。
+                        </div>
+                    </div>
+                    <div class="difference-aspect entj-aspect">
+                        <div class="aspect-title">领导风格</div>
+                        <div class="aspect-description">
+                            ENTJ是直接的、行动导向的领导者，善于组织和激励团队。他们喜欢站在前线，通过强势的个人魅力和执行力来推动项目进展。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="difference-item">
+                    <div class="difference-aspect intj-aspect">
+                        <div class="aspect-title">人际交往</div>
+                        <div class="aspect-description">
+                            INTJ重视深度和质量的社交关系，朋友圈相对较小但关系密切。他们在沟通中更注重内容的准确性和深度，不太擅长闲聊。
+                        </div>
+                    </div>
+                    <div class="difference-aspect entj-aspect">
+                        <div class="aspect-title">人际交往</div>
+                        <div class="aspect-description">
+                            ENTJ拥有广泛的社交网络，善于建立和维护各种人际关系。他们在沟通中充满自信和说服力，能够轻松地在不同社交场合中游刃有余。
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="compatibility-section">
+                <h3 class="compatibility-title">重要说明：不存在"更强"的人格</h3>
+                <div class="compatibility-score">互补协作</div>
+                <p class="compatibility-description">
+                    <strong>INTJ的真正优势</strong>：战略洞察(98分)、创新思维(96分)、分析深度(95分)<br>
+                    <strong>ENTJ的真正优势</strong>：执行能力(95分)、团队领导(94分)、环境适应(90分)<br><br>
+
+                    这两种类型不是竞争关系，而是<strong>完美互补</strong>的合作伙伴：
+                    <br><br>
+                    🏗️ <strong>INTJ</strong>：负责战略规划、理论创新、深度分析<br>
+                    ⚡ <strong>ENTJ</strong>：负责执行落地、团队管理、资源整合<br><br>
+
+                    在创业公司、战略咨询、高管团队中，INTJ+ENTJ的组合能够：
+                    <br>
+                    • 将复杂愿景转化为可执行计划<br>
+                    • 平衡创新思维与实际落地<br>
+                    • 兼顾长远战略与短期效率
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // 初始化雷达图
+        function initializeRadarCharts() {
+            const intjCtx = document.getElementById('intjRadar').getContext('2d');
+            const entjCtx = document.getElementById('entjRadar').getContext('2d');
+
+            const radarOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            stepSize: 20,
+                            font: {
+                                size: 11
+                            },
+                            color: '#718096'
+                        },
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        },
+                        pointLabels: {
+                            font: {
+                                size: 12,
+                                weight: '500'
+                            },
+                            color: '#2d3748'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleFont: {
+                            size: 14,
+                            weight: '600'
+                        },
+                        bodyFont: {
+                            size: 13
+                        },
+                        padding: 12,
+                        cornerRadius: 8,
+                        displayColors: false,
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.parsed.r + ' 分';
+                            }
+                        }
+                    }
+                }
+            };
+
+            // INTJ 雷达图
+            new Chart(intjCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['战略洞察', '执行能力', '创新思维', '团队领导', '分析深度', '环境适应'],
+                    datasets: [{
+                        label: 'INTJ',
+                        data: [98, 75, 96, 82, 95, 70],
+                        backgroundColor: 'rgba(102, 126, 234, 0.2)',
+                        borderColor: 'rgb(102, 126, 234)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgb(102, 126, 234)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(102, 126, 234)',
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: radarOptions
+            });
+
+            // ENTJ 雷达图
+            new Chart(entjCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['战略洞察', '执行能力', '创新思维', '团队领导', '分析深度', '环境适应'],
+                    datasets: [{
+                        label: 'ENTJ',
+                        data: [85, 95, 82, 94, 88, 90],
+                        backgroundColor: 'rgba(240, 147, 251, 0.2)',
+                        borderColor: 'rgb(240, 147, 251)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgb(240, 147, 251)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(240, 147, 251)',
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: radarOptions
+            });
+        }
+
+        // 动画效果
+        function animateBars() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const bars = entry.target.querySelectorAll('.bar-fill');
+                        bars.forEach(bar => {
+                            const width = bar.style.width;
+                            bar.style.width = '0%';
+                            setTimeout(() => {
+                                bar.style.width = width;
+                            }, 100);
+                        });
+                    }
+                });
+            });
+
+            const dimensionsSection = document.querySelector('.dimensions-comparison');
+            if (dimensionsSection) {
+                observer.observe(dimensionsSection);
+            }
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeRadarCharts();
+            animateBars();
+        });
+    </script>
+</body>
+</html>

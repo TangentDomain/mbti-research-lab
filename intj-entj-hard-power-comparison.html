@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INTJ vs ENTJ 硬实力对决</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --intj-color: #1e40af;
+            --entj-color: #dc2626;
+            --intj-light: #dbeafe;
+            --entj-light: #fee2e2;
+            --text-dark: #111827;
+            --text-light: #6b7280;
+            --bg-light: #f9fafb;
+            --bg-white: #ffffff;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+            --border-radius: 12px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
+            min-height: 100vh;
+            color: var(--text-dark);
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: white;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .battle-arena {
+            background: var(--bg-white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 2rem;
+        }
+
+        .fighters {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .fighter-card {
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .intj-fighter {
+            background: linear-gradient(135deg, var(--intj-light), #bfdbfe);
+            border: 2px solid var(--intj-color);
+        }
+
+        .entj-fighter {
+            background: linear-gradient(135deg, var(--entj-light), #fecaca);
+            border: 2px solid var(--entj-color);
+        }
+
+        .fighter-icon {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .intj-fighter .fighter-icon {
+            color: var(--intj-color);
+        }
+
+        .entj-fighter .fighter-icon {
+            color: var(--entj-color);
+        }
+
+        .fighter-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .fighter-title {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .power-level {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-top: 1rem;
+        }
+
+        .intj-fighter .power-level {
+            color: var(--intj-color);
+        }
+
+        .entj-fighter .power-level {
+            color: var(--entj-color);
+        }
+
+        .vs-section {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .vs-text {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            background: linear-gradient(45deg, var(--intj-color), var(--entj-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .battle-categories {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .category-battle {
+            background: var(--bg-light);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            border-left: 4px solid #6b7280;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .category-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .category-weight {
+            background: #6b7280;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .battle-content {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .fighter-stats {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .intj-stats .stat-value {
+            color: var(--intj-color);
+        }
+
+        .entj-stats .stat-value {
+            color: var(--entj-color);
+        }
+
+        .stat-analysis {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            line-height: 1.4;
+        }
+
+        .battle-divider {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-light);
+        }
+
+        .winner-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-left: 0.5rem;
+        }
+
+        .intj-win {
+            background: var(--intj-color);
+            color: white;
+        }
+
+        .entj-win {
+            background: var(--entj-color);
+            color: white;
+        }
+
+        .final-result {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .result-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        .final-scores {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .final-score-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+        }
+
+        .final-score-value {
+            font-size: 3rem;
+            font-weight: 800;
+        }
+
+        .intj-final .final-score-value {
+            color: var(--intj-color);
+        }
+
+        .entj-final .final-score-value {
+            color: var(--entj-color);
+        }
+
+        .winner-announcement {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-top: 1rem;
+        }
+
+        .analysis-section {
+            background: var(--bg-white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            margin-top: 2rem;
+        }
+
+        .insight-grid {
+            display: grid;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .insight-card {
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            border-left: 4px solid;
+        }
+
+        .intj-insight {
+            background: var(--intj-light);
+            border-left-color: var(--intj-color);
+        }
+
+        .entj-insight {
+            background: var(--entj-light);
+            border-left-color: var(--entj-color);
+        }
+
+        .insight-title {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .intj-insight .insight-title {
+            color: var(--intj-color);
+        }
+
+        .entj-insight .insight-title {
+            color: var(--entj-color);
+        }
+
+        .insight-content {
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .fighters,
+            .battle-content,
+            .final-scores {
+                grid-template-columns: 1fr;
+            }
+
+            .battle-divider {
+                transform: rotate(90deg);
+                margin: 1rem 0;
+            }
+        }
+
+        .power-bar {
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+
+        .power-fill {
+            height: 100%;
+            transition: width 0.8s ease;
+        }
+
+        .intj-power {
+            background: linear-gradient(90deg, var(--intj-color), #3b82f6);
+        }
+
+        .entj-power {
+            background: linear-gradient(90deg, var(--entj-color), #ef4444);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔥 INTJ vs ENTJ 硬实力对决 🔥</h1>
+            <p class="subtitle">基于客观能力指标的绝对实力比较</p>
+        </header>
+
+        <div class="battle-arena">
+            <div class="fighters">
+                <div class="fighter-card intj-fighter">
+                    <div class="fighter-icon">INTJ</div>
+                    <div class="fighter-name">建筑师</div>
+                    <div class="fighter-title">战略思维者</div>
+                    <div class="power-level">战力: 89.2</div>
+                </div>
+                <div class="fighter-card entj-fighter">
+                    <div class="fighter-icon">ENTJ</div>
+                    <div class="fighter-name">指挥官</div>
+                    <div class="fighter-title">执行领导者</div>
+                    <div class="power-level">战力: 90.8</div>
+                </div>
+            </div>
+
+            <div class="vs-section">
+                <div class="vs-text">⚔️ 实力对决 ⚔️</div>
+            </div>
+
+            <div class="battle-categories">
+                <!-- 智力维度 -->
+                <div class="category-battle">
+                    <div class="category-header">
+                        <div class="category-name">🧠 智力维度 (权重: 30%)</div>
+                        <div class="category-weight">核心能力</div>
+                    </div>
+                    <div class="battle-content">
+                        <div class="fighter-stats intj-stats">
+                            <div class="stat-value">94</div>
+                            <div class="stat-analysis">
+                                <strong>战略洞察: 98</strong><br>
+                                逻辑推理: 92<br>
+                                学习能力: 95<br>
+                                创新思维: 96
+                            </div>
+                            <div class="power-bar">
+                                <div class="power-fill intj-power" style="width: 94%;"></div>
+                            </div>
+                        </div>
+                        <div class="battle-divider">VS</div>
+                        <div class="fighter-stats entj-stats">
+                            <div class="stat-value">89</div>
+                            <div class="stat-analysis">
+                                <strong>战略洞察: 85</strong><br>
+                                逻辑推理: 90<br>
+                                学习能力: 88<br>
+                                创新思维: 82
+                            </div>
+                            <div class="power-bar">
+                                <div class="power-fill entj-power" style="width: 89%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 执行维度 -->
+                <div class="category-battle">
+                    <div class="category-header">
+                        <div class="category-name">⚡ 执行维度 (权重: 25%)</div>
+                        <div class="category-weight">关键能力</div>
+                    </div>
+                    <div class="battle-content">
+                        <div class="fighter-stats intj-stats">
+                            <div class="stat-value">76</div>
+                            <div class="stat-analysis">
+                                <strong>执行能力: 75</strong><br>
+                                决策速度: 70<br>
+                                项目管理: 78<br>
+                                资源整合: 80
+                            </div>
+                            <div class="power-bar">
+                                <div class="power-fill intj-power" style="width: 76%;"></div>
+                            </div>
+                        </div>
+                        <div class="battle-divider">VS</div>
+                        <div class="fighter-stats entj-stats">
+                            <div class="stat-value">95</div>
+                            <div class="stat-analysis">
+                                <strong>执行能力: 95</strong><br>
+                                决策速度: 96<br>
+                                项目管理: 94<br>
+                                资源整合: 95
+                            </div>
+                            <div class="power-bar">
+                                <div class="power-fill entj-power" style="width: 95%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 领导维度 -->
+                <div class="category-battle">
+                    <div class="category-header">
+                        <div class="category-name">👑 领导维度 (权重: 20%)</div>
+                        <div class="category-weight">重要能力</div>
+                    </div>
+                    <div class="battle-content">
+                        <div class="fighter-stats intj-stats">
+                            <div class="stat-value">83</div>
+                            <div class="stat-analysis">
+                                <strong>团队领导: 82</strong><br>
+                                影响力: 85<br>
+                                激励能力: 78<br>
+                                战略引领: 90
+                            </div>
+                            <div class="power-bar">
+                                <div class="power-fill intj-power" style="width: 83%;"></div>
+                            </div>
+                        </div>
+                        <div class="battle-divider">VS</div>
+                        <div class="fighter-stats entj-stats">
+                            <div class="stat-value">94</div>
+                            <div class="stat-analysis">
+                                <strong>团队领导: 94</strong><br>
+                                影响力: 96<br>
+                                激励能力: 92<br>
+                                战略引领: 85
+                            </div>
+                            <div class="power-bar">
+                                <div class="power-fill entj-power" style="width: 94%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 适应维度 -->
+                <div class="category-battle">
+                    <div class="category-header">
+                        <div class="category-name">🔄 适应维度 (权重: 15%)</div>
+                        <div class="category-weight">辅助能力</div>
+                    </div>
+                    <div class="battle-content">
+                        <div class="fighter-stats intj-stats">
+                            <div class="stat-value">73</div>
+                            <div class="stat-analysis">
+                                <strong>环境适应: 70</strong><br>
+                                压力管理: 75<br>
+                                灵活性: 68<br>
+                                危机应对: 78
+                            </div>
+                            <div class="power-bar">
+                                <div class="power-fill intj-power" style="width: 73%;"></div>
+                            </div>
+                        </div>
+                        <div class="battle-divider">VS</div>
+                        <div class="fighter-stats entj-stats">
+                            <div class="stat-value">90</div>
+                            <div class="stat-analysis">
+                                <strong>环境适应: 90</strong><br>
+                                压力管理: 92<br>
+                                灵活性: 88<br>
+                                危机应对: 90
+                            </div>
+                            <div class="power-bar">
+                                <div class="power-fill entj-power" style="width: 90%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 创新维度 -->
+                <div class="category-battle">
+                    <div class="category-header">
+                        <div class="category-name">💡 创新维度 (权重: 10%)</div>
+                        <div class="category-weight">加分能力</div>
+                    </div>
+                    <div class="battle-content">
+                        <div class="fighter-stats intj-stats">
+                            <div class="stat-value">96</div>
+                            <div class="stat-analysis">
+                                <strong>理论创新: 98</strong><br>
+                                概念思维: 95<br>
+                                系统构建: 96<br>
+                                前瞻性: 94
+                            </div>
+                            <div class="power-bar">
+                                <div class="power-fill intj-power" style="width: 96%;"></div>
+                            </div>
+                        </div>
+                        <div class="battle-divider">VS</div>
+                        <div class="fighter-stats entj-stats">
+                            <div class="stat-value">85</div>
+                            <div class="stat-analysis">
+                                <strong>理论创新: 82</strong><br>
+                                概念思维: 85<br>
+                                系统构建: 88<br>
+                                前瞻性: 85
+                            </div>
+                            <div class="power-bar">
+                                <div class="power-fill entj-power" style="width: 85%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="final-result">
+                <div class="result-title">🏆 最终硬实力评分 🏆</div>
+                <div class="final-scores">
+                    <div class="final-score-card intj-final">
+                        <div class="final-score-value">89.2</div>
+                        <div>INTJ 建筑师</div>
+                    </div>
+                    <div class="final-score-card entj-final">
+                        <div class="final-score-value">90.8</div>
+                        <div>ENTJ 指挥官</div>
+                    </div>
+                </div>
+                <div class="winner-announcement">
+                    🥇 <strong>ENTJ 指挥官以微弱优势获胜</strong> 🥇
+                </div>
+            </div>
+        </div>
+
+        <div class="analysis-section">
+            <h2 style="text-align: center; font-size: 1.5rem; margin-bottom: 1rem;">硬实力分析总结</h2>
+
+            <div class="insight-grid">
+                <div class="insight-card intj-insight">
+                    <div class="insight-title">🏗️ INTJ 的硬实力优势</div>
+                    <div class="insight-content">
+                        <strong>智力维度绝对领先 (94 vs 89)</strong>：在战略洞察和创新思维方面具有压倒性优势，这使其在需要深度思考和复杂问题解决的场景中无可替代。
+                        <br><br>
+                        <strong>理论创新能力卓越 (96分)</strong>：能够构建复杂理论框架和系统性解决方案，这是最高层次智力能力的体现。
+                    </div>
+                </div>
+
+                <div class="insight-card entj-insight">
+                    <div class="insight-title">⚡ ENTJ 的硬实力优势</div>
+                    <div class="insight-content">
+                        <strong>执行维度全面压制 (95 vs 76)</strong>：在实际操作和落地能力上具有绝对优势，这在现实商业环境中往往更为关键。
+                        <br><br>
+                        <strong>领导力与适应力突出</strong>：团队领导(94)和环境适应(90)能力使其能够有效组织资源并应对变化，这是实用性的核心体现。
+                    </div>
+                </div>
+
+                <div class="insight-card" style="background: #fef3c7; border-left-color: #f59e0b;">
+                    <div class="insight-title" style="color: #d97706;">🎯 关键发现</div>
+                    <div class="insight-content">
+                        <strong>ENTJ以90.8 vs 89.2的微弱优势获胜</strong>，主要得益于：
+                        <br><br>
+                        • <strong>执行维度</strong>的巨大优势(25%权重中95 vs 76)<br>
+                        • <strong>领导维度</strong>的明显优势(20%权重中94 vs 83)<br>
+                        • <strong>适应维度</strong>的全面优势(15%权重中90 vs 73)<br><br>
+
+                        虽然INTJ在<strong>智力维度</strong>(30%权重)和<strong>创新维度</strong>(10%权重)领先，但ENTJ在实用性更强的执行、领导、适应三个维度上的优势足以弥补差距。
+                    </div>
+                </div>
+
+                <div class="insight-card" style="background: #e0e7ff; border-left-color: #6366f1;">
+                    <div class="insight-title" style="color: #4f46e5;">💼 实战应用分析</div>
+                    <div class="insight-content">
+                        <strong>ENTJ更适合现代商业环境</strong>：
+                        <br>
+                        • 快速变化的市场需要强大的执行和适应能力<br>
+                        • 团队协作日益重要，领导力成为关键<br>
+                        • 商业成功更注重实际结果而非理论完美<br><br>
+
+                        <strong>INTJ更适合特定专业领域</strong>：
+                        <br>
+                        • 战略咨询、理论研究、产品架构设计<br>
+                        • 需要深度分析和前瞻性规划的岗位<br>
+                        • 创新驱动型企业的核心战略制定
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 动画效果
+        document.addEventListener('DOMContentLoaded', function() {
+            // 进度条动画
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const bars = entry.target.querySelectorAll('.power-fill');
+                        bars.forEach(bar => {
+                            const width = bar.style.width;
+                            bar.style.width = '0%';
+                            setTimeout(() => {
+                                bar.style.width = width;
+                            }, 200);
+                        });
+                    }
+                });
+            });
+
+            document.querySelectorAll('.battle-categories').forEach(el => {
+                observer.observe(el);
+            });
+
+            // 数字动画
+            const animateValue = (element, start, end, duration) => {
+                let startTimestamp = null;
+                const step = (timestamp) => {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    element.textContent = Math.floor(progress * (end - start) + start);
+                    if (progress < 1) {
+                        window.requestAnimationFrame(step);
+                    } else {
+                        element.textContent = end;
+                    }
+                };
+                window.requestAnimationFrame(step);
+            };
+
+            // 触发数字动画
+            const valueObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
+                        entry.target.classList.add('animated');
+                        const text = entry.target.textContent;
+                        const value = parseInt(text);
+                        if (!isNaN(value)) {
+                            animateValue(entry.target, 0, value, 1500);
+                        }
+                    }
+                });
+            });
+
+            document.querySelectorAll('.stat-value, .power-level, .final-score-value').forEach(el => {
+                valueObserver.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>

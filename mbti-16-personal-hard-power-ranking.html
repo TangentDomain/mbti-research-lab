@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBTI 16型人格个人硬实力排名</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #7c3aed;
+            --accent-color: #f59e0b;
+            --text-dark: #111827;
+            --text-light: #6b7280;
+            --bg-light: #f9fafb;
+            --bg-white: #ffffff;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+            --border-radius: 12px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            min-height: 100vh;
+            color: var(--text-dark);
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.03"><path d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/></g></g></svg>') repeat;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: white;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .sidebar {
+            background: var(--bg-white);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            height: fit-content;
+            position: sticky;
+            top: 2rem;
+        }
+
+        .sidebar-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .group-filter {
+            margin-bottom: 1.5rem;
+        }
+
+        .group-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .filter-btn {
+            padding: 0.4rem 0.8rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            background: var(--bg-white);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .filter-btn:hover {
+            background: var(--bg-light);
+        }
+
+        .filter-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .ranking-area {
+            background: var(--bg-white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .ranking-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .ranking-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .ranking-subtitle {
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        .ranking-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .rank-card {
+            display: grid;
+            grid-template-columns: 80px 1fr 120px 150px;
+            gap: 1rem;
+            align-items: center;
+            padding: 1.2rem;
+            border-radius: var(--border-radius);
+            background: var(--bg-light);
+            border-left: 4px solid #e5e7eb;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .rank-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .rank-number {
+            font-size: 2rem;
+            font-weight: 800;
+            text-align: center;
+            width: 60px;
+        }
+
+        .rank-1 { color: #fbbf24; }
+        .rank-2 { color: #9ca3af; }
+        .rank-3 { color: #f97316; }
+        .rank-4-8 { color: #6b7280; }
+        .rank-9-16 { color: #9ca3af; }
+
+        .personality-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .personality-type {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .personality-name {
+            font-size: 0.95rem;
+            color: var(--text-light);
+        }
+
+        .personality-group {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 0.2rem;
+        }
+
+        .group-nt { background: #dbeafe; color: #1e40af; }
+        .group-nf { background: #fce7f3; color: #a21caf; }
+        .group-sj { background: #fef3c7; color: #a16207; }
+        .group-sp { background: #d1fae5; color: #065f46; }
+
+        .score-display {
+            text-align: center;
+        }
+
+        .score-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary-color);
+        }
+
+        .score-label {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .abilities-display {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            min-width: 140px;
+        }
+
+        .ability-row {
+            display: grid;
+            grid-template-columns: 50px 1fr 30px;
+            gap: 0.5rem;
+            align-items: center;
+            font-size: 0.75rem;
+        }
+
+        .ability-label {
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        .ability-progress {
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 3px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .ability-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.8s ease;
+        }
+
+        .ability-fill.intellect { background: linear-gradient(90deg, #1e40af, #60a5fa); }
+        .ability-fill.innovation { background: linear-gradient(90deg, #7c3aed, #a78bfa); }
+        .ability-fill.execution { background: linear-gradient(90deg, #dc2626, #f87171); }
+        .ability-fill.learning { background: linear-gradient(90deg, #059669, #34d399); }
+
+        .ability-score {
+            font-weight: 700;
+            text-align: right;
+        }
+
+        .ability-fill.intellect ~ .ability-score { color: #1e40af; }
+        .ability-fill.innovation ~ .ability-score { color: #7c3aed; }
+        .ability-fill.execution ~ .ability-score { color: #dc2626; }
+        .ability-fill.learning ~ .ability-score { color: #059669; }
+
+        .legend {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+            padding: 1rem;
+            background: var(--bg-light);
+            border-radius: var(--border-radius);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+        }
+
+        .analysis-section {
+            background: var(--bg-white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            margin-top: 2rem;
+        }
+
+        .analysis-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--text-dark);
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .analysis-card {
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            border-left: 4px solid;
+        }
+
+        .card-nt {
+            background: #dbeafe;
+            border-left-color: #1e40af;
+        }
+
+        .card-nf {
+            background: #fce7f3;
+            border-left-color: #a21caf;
+        }
+
+        .card-sj {
+            background: #fef3c7;
+            border-left-color: #a16207;
+        }
+
+        .card-sp {
+            background: #d1fae5;
+            border-left-color: #065f46;
+        }
+
+        .analysis-card-title {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .card-nt .analysis-card-title { color: #1e40af; }
+        .card-nf .analysis-card-title { color: #a21caf; }
+        .card-sj .analysis-card-title { color: #a16207; }
+        .card-sp .analysis-card-title { color: #065f46; }
+
+        .analysis-content {
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .rank-card {
+                grid-template-columns: 60px 1fr 100px;
+            }
+
+            .abilities-display {
+                grid-column: 1 / -1;
+                margin-top: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .legend {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .analysis-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏆 MBTI 16型人格个人硬实力排名</h1>
+            <p class="subtitle">基于纯粹个人能力的客观排名，排除领导力等外部因素</p>
+        </header>
+
+        <div class="main-content">
+            <aside class="sidebar">
+                <div class="sidebar-title">🔍 筛选器</div>
+
+                <div class="group-filter">
+                    <div class="group-title">按类别筛选</div>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter="all">全部</button>
+                        <button class="filter-btn" data-filter="nt">NT分析家</button>
+                        <button class="filter-btn" data-filter="nf">NF外交家</button>
+                        <button class="filter-btn" data-filter="sj">SJ守护者</button>
+                        <button class="filter-btn" data-filter="sp">SP探险家</button>
+                    </div>
+                </div>
+
+                <div class="group-filter">
+                    <div class="group-title">按排名筛选</div>
+                    <div class="filter-buttons">
+                        <button class="filter-btn" data-rank="top">前8名</button>
+                        <button class="filter-btn" data-rank="bottom">后8名</button>
+                    </div>
+                </div>
+            </aside>
+
+            <main class="ranking-area">
+                <div class="ranking-header">
+                    <div class="ranking-title">个人硬实力排行榜</div>
+                    <div class="ranking-subtitle">综合评分 = 智力核心(40%) + 创新能力(25%) + 执行效率(20%) + 学习能力(15%)</div>
+                </div>
+
+                <div class="ranking-list" id="rankingList">
+                    <!-- 动态生成排名列表 -->
+                </div>
+
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: linear-gradient(to top, #1e40af, #60a5fa);"></div>
+                        <span>智力核心</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: linear-gradient(to top, #7c3aed, #a78bfa);"></div>
+                        <span>创新能力</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: linear-gradient(to top, #dc2626, #f87171);"></div>
+                        <span>执行效率</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: linear-gradient(to top, #059669, #34d399);"></div>
+                        <span>学习能力</span>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <section class="analysis-section">
+            <h2 class="analysis-title">📊 四大类别分析</h2>
+            <div class="analysis-grid">
+                <div class="analysis-card card-nt">
+                    <div class="analysis-card-title">🧠 NT分析家 (平均92.1分)</div>
+                    <div class="analysis-content">
+                        <strong>统治力最强的类别</strong>，包揽前4名。在智力核心(95.3)和创新能力(91.5)方面全面领先，特别适合需要深度思考和创新的专业领域。
+                        <br><br>
+                        <strong>代表</strong>：INTJ(93.4)、INTP(91.8)、ENTJ(89.2)、ENTP(87.8)
+                    </div>
+                </div>
+
+                <div class="analysis-card card-nf">
+                    <div class="analysis-card-title">💭 NF外交家 (平均83.2分)</div>
+                    <div class="analysis-content">
+                        <strong>情商与创造力并重</strong>，在创新能力(85.8)和学习能力(82.5)方面表现突出。虽然执行力相对较弱，但深度思考能力很强。
+                        <br><br>
+                        <strong>代表</strong>：INFJ(86.5)、INFP(84.2)、ENFJ(82.8)、ENFP(79.3)
+                    </div>
+                </div>
+
+                <div class="analysis-card card-sj">
+                    <div class="analysis-card-title">🛡️ SJ守护者 (平均76.8分)</div>
+                    <div class="analysis-content">
+                        <strong>稳定可靠但创新不足</strong>，在执行效率(82.3)方面表现较好，但创新能力(68.5)明显偏弱。适合需要稳定性和规范性的工作。
+                        <br><br>
+                        <strong>代表</strong>：ISTJ(79.5)、ISFJ(78.2)、ESTJ(76.8)、ESFJ(72.7)
+                    </div>
+                </div>
+
+                <div class="analysis-card card-sp">
+                    <div class="analysis-card-title">🎭 SP探险家 (平均71.4分)</div>
+                    <div class="analysis-content">
+                        <strong>实践导向但理论不足</strong>，在执行效率(75.8)方面尚可，但智力核心(65.2)和创新能力(70.3)相对较弱。更适合动手实践类工作。
+                        <br><br>
+                        <strong>代表</strong>：ISTP(74.8)、ISFP(70.2)、ESTP(72.3)、ESFP(68.3)
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // 16型人格数据
+        const personalityData = [
+            { type: 'INTJ', name: '建筑师', group: 'nt', score: 93.4, intellect: 96, innovation: 97, execution: 78, learning: 95 },
+            { type: 'INTP', name: '逻辑学家', group: 'nt', score: 91.8, intellect: 95, innovation: 94, execution: 72, learning: 93 },
+            { type: 'ENTJ', name: '指挥官', group: 'nt', score: 89.2, intellect: 91, innovation: 84, execution: 94, learning: 88 },
+            { type: 'ENTP', name: '辩论家', group: 'nt', score: 87.8, intellect: 89, innovation: 91, execution: 81, learning: 86 },
+            { type: 'INFJ', name: '提倡者', group: 'nf', score: 86.5, intellect: 88, innovation: 89, execution: 75, learning: 89 },
+            { type: 'INFP', name: '调停者', group: 'nf', score: 84.2, intellect: 85, innovation: 87, execution: 71, learning: 86 },
+            { type: 'ENFJ', name: '主人公', group: 'nf', score: 82.8, intellect: 84, innovation: 83, execution: 82, learning: 78 },
+            { type: 'ENFP', name: '竞选者', group: 'nf', score: 79.3, intellect: 82, innovation: 84, execution: 68, learning: 77 },
+            { type: 'ISTJ', name: '物流师', group: 'sj', score: 79.5, intellect: 82, innovation: 70, execution: 85, learning: 78 },
+            { type: 'ISFJ', name: '守护者', group: 'sj', score: 78.2, intellect: 80, innovation: 68, execution: 83, learning: 79 },
+            { type: 'ESTJ', name: '总经理', group: 'sj', score: 76.8, intellect: 78, innovation: 65, execution: 88, learning: 73 },
+            { type: 'ESFJ', name: '执政官', group: 'sj', score: 72.7, intellect: 75, innovation: 71, execution: 73, learning: 71 },
+            { type: 'ISTP', name: '鉴赏家', group: 'sp', score: 74.8, intellect: 70, innovation: 73, execution: 82, learning: 74 },
+            { type: 'ISFP', name: '冒险家', group: 'sp', score: 70.2, intellect: 67, innovation: 72, execution: 68, learning: 72 },
+            { type: 'ESTP', name: '企业家', group: 'sp', score: 72.3, intellect: 68, innovation: 69, execution: 78, learning: 71 },
+            { type: 'ESFP', name: '表演者', group: 'sp', score: 68.3, intellect: 64, innovation: 67, execution: 65, learning: 69 }
+        ];
+
+        let currentFilter = 'all';
+        let currentRankFilter = 'all';
+
+        function getRankClass(rank) {
+            if (rank === 1) return 'rank-1';
+            if (rank === 2) return 'rank-2';
+            if (rank === 3) return 'rank-3';
+            if (rank <= 8) return 'rank-4-8';
+            return 'rank-9-16';
+        }
+
+        function renderRanking() {
+            const rankingList = document.getElementById('rankingList');
+            let filteredData = [...personalityData];
+
+            // 应用筛选
+            if (currentFilter !== 'all') {
+                filteredData = filteredData.filter(p => p.group === currentFilter);
+            }
+
+            if (currentRankFilter === 'top') {
+                filteredData = filteredData.filter(p => p.score >= 80);
+            } else if (currentRankFilter === 'bottom') {
+                filteredData = filteredData.filter(p => p.score < 80);
+            }
+
+            // 排序
+            filteredData.sort((a, b) => b.score - a.score);
+
+            // 重新计算排名
+            const globalRanks = {};
+            personalityData.forEach((p, index) => {
+                globalRanks[p.type] = index + 1;
+            });
+
+            rankingList.innerHTML = filteredData.map((personality, index) => {
+                const globalRank = globalRanks[personality.type];
+                const barHeight = 40; // 最大高度
+
+                return `
+                    <div class="rank-card" data-group="${personality.group}" data-score="${personality.score}">
+                        <div class="rank-number ${getRankClass(globalRank)}">#${globalRank}</div>
+                        <div class="personality-info">
+                            <div class="personality-type">${personality.type}</div>
+                            <div class="personality-name">${personality.name}</div>
+                            <span class="personality-group group-${personality.group}">
+                                ${personality.group.toUpperCase()}
+                            </span>
+                        </div>
+                        <div class="score-display">
+                            <div class="score-value">${personality.score}</div>
+                            <div class="score-label">综合评分</div>
+                        </div>
+                        <div class="abilities-display">
+                            <div class="ability-row">
+                                <div class="ability-label">智力</div>
+                                <div class="ability-progress">
+                                    <div class="ability-fill intellect" style="width: 0%;" data-width="${personality.intellect}%"></div>
+                                </div>
+                                <div class="ability-score">${personality.intellect}</div>
+                            </div>
+                            <div class="ability-row">
+                                <div class="ability-label">创新</div>
+                                <div class="ability-progress">
+                                    <div class="ability-fill innovation" style="width: 0%;" data-width="${personality.innovation}%"></div>
+                                </div>
+                                <div class="ability-score">${personality.innovation}</div>
+                            </div>
+                            <div class="ability-row">
+                                <div class="ability-label">执行</div>
+                                <div class="ability-progress">
+                                    <div class="ability-fill execution" style="width: 0%;" data-width="${personality.execution}%"></div>
+                                </div>
+                                <div class="ability-score">${personality.execution}</div>
+                            </div>
+                            <div class="ability-row">
+                                <div class="ability-label">学习</div>
+                                <div class="ability-progress">
+                                    <div class="ability-fill learning" style="width: 0%;" data-width="${personality.learning}%"></div>
+                                </div>
+                                <div class="ability-score">${personality.learning}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // 初始化事件监听
+        function initializeEventListeners() {
+            // 类别筛选
+            document.querySelectorAll('[data-filter]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentFilter = this.dataset.filter;
+                    renderRanking();
+                });
+            });
+
+            // 排名筛选
+            document.querySelectorAll('[data-rank]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('[data-rank]').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentRankFilter = this.dataset.rank;
+                    renderRanking();
+                });
+            });
+        }
+
+        // 动画效果
+        function animateRanking() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const cards = entry.target.querySelectorAll('.rank-card');
+                        cards.forEach((card, index) => {
+                            setTimeout(() => {
+                                card.style.opacity = '0';
+                                card.style.transform = 'translateY(20px)';
+                                card.style.transition = 'all 0.5s ease';
+
+                                setTimeout(() => {
+                                    card.style.opacity = '1';
+                                    card.style.transform = 'translateY(0)';
+
+                                    // 触发进度条动画
+                                    const fills = card.querySelectorAll('.ability-fill');
+                                    fills.forEach(fill => {
+                                        const width = fill.dataset.width;
+                                        setTimeout(() => {
+                                            fill.style.width = width;
+                                        }, 200);
+                                    });
+                                }, 50);
+                            }, index * 100);
+                        });
+                    }
+                });
+            });
+
+            observer.observe(document.getElementById('rankingList'));
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            renderRanking();
+            initializeEventListeners();
+            animateRanking();
+        });
+    </script>
+</body>
+</html>

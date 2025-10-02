@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBTI 研究实验室</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --accent-color: #f093fb;
+            --text-dark: #2d3748;
+            --text-light: #718096;
+            --bg-light: #f7fafc;
+            --bg-white: #ffffff;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+            --border-radius: 16px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--text-dark);
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.03"><path d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/></g></g></svg>') repeat;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: white;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .tool-card {
+            background: var(--bg-white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .tool-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px rgba(0,0,0,0.15);
+        }
+
+        .tool-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tool-icon {
+            font-size: 2.5rem;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            color: white;
+        }
+
+        .tool-title {
+            flex: 1;
+        }
+
+        .tool-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .tool-type {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .tool-description {
+            color: var(--text-dark);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .tool-features {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .tool-features li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e2e8f0;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tool-features li:last-child {
+            border-bottom: none;
+        }
+
+        .feature-icon {
+            color: var(--primary-color);
+            font-size: 1rem;
+        }
+
+        .tool-button {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .tool-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            color: white;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .featured-tool {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.9));
+            border: 2px solid var(--primary-color);
+        }
+
+        .featured-tool .tool-header {
+            margin-bottom: 2rem;
+        }
+
+        .featured-tool .tool-icon {
+            font-size: 3rem;
+            width: 80px;
+            height: 80px;
+        }
+
+        .featured-tool .tool-name {
+            font-size: 1.8rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .tools-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .featured-tool {
+                grid-column: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧠 MBTI 研究实验室</h1>
+            <p class="subtitle">探索16种人格类型的能力、特点与差异</p>
+        </header>
+
+        <section>
+            <h2 class="section-title">🌟 旗舰工具</h2>
+            <div class="tools-grid">
+                <div class="tool-card featured-tool">
+                    <div class="tool-header">
+                        <div class="tool-icon">⚔️</div>
+                        <div class="tool-title">
+                            <div class="tool-name">MBTI 能力竞技场</div>
+                            <div class="tool-type">游戏化对比工具</div>
+                        </div>
+                    </div>
+                    <div class="tool-description">
+                        最有趣的MBTI对比工具！选择两个人格类型进行终极对决，通过雷达图和进度条直观展示能力差异。
+                    </div>
+                    <ul class="tool-features">
+                        <li><span class="feature-icon">🎮</span> 游戏化对战体验</li>
+                        <li><span class="feature-icon">📊</span> 双重对比系统（雷达图+进度条）</li>
+                        <li><span class="feature-icon">⚡</span> 自动比较，即时反馈</li>
+                        <li><span class="feature-icon">🏆</span> 获胜者皇冠动画</li>
+                    </ul>
+                    <a href="mbti-battle-arena.html" class="tool-button">开始对战</a>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title">📊 分析工具</h2>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <div class="tool-icon">🏆</div>
+                        <div class="tool-title">
+                            <div class="tool-name">16型人格硬实力排名</div>
+                            <div class="tool-type">综合实力对比</div>
+                        </div>
+                    </div>
+                    <div class="tool-description">
+                        基于纯粹个人能力的完整排名系统，排除领导力等外部因素，专注个人硬核实力。
+                    </div>
+                    <ul class="tool-features">
+                        <li><span class="feature-icon">📈</span> 完整16型人格排名</li>
+                        <li><span class="feature-icon">🎯</span> 四维度能力评估</li>
+                        <li><span class="feature-icon">🔍</span> 多维度筛选功能</li>
+                        <li><span class="feature-icon">📱</span> 响应式设计</li>
+                    </ul>
+                    <a href="mbti-16-personal-hard-power-ranking.html" class="tool-button">查看排名</a>
+                </div>
+
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <div class="tool-icon">📊</div>
+                        <div class="tool-title">
+                            <div class="tool-name">MBTI 雷达图分析</div>
+                            <div class="tool-type">多维度可视化</div>
+                        </div>
+                    </div>
+                    <div class="tool-description">
+                        每个人格类型的六边形雷达图分析，直观展示能力分布，支持交互式数据查看。
+                    </div>
+                    <ul class="tool-features">
+                        <li><span class="feature-icon">🔷</span> 六边形雷达图</li>
+                        <li><span class="feature-icon">📝</span> 详细能力说明</li>
+                        <li><span class="feature-icon">🔄</span> 动态切换人格类型</li>
+                        <li><span class="feature-icon">🎨</span> 精美视觉设计</li>
+                    </ul>
+                    <a href="mbti-personality-radar.html" class="tool-button">开始分析</a>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title">⚖️ 专项对比</h2>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <div class="tool-icon">🏗️</div>
+                        <div class="tool-title">
+                            <div class="tool-name">INTJ vs ENTJ 深度对比</div>
+                            <div class="tool-type">最强人格对决</div>
+                        </div>
+                    </div>
+                    <div class="tool-description">
+                        两种最强人格类型的全面对比分析，涵盖核心差异、优劣势和协作潜力。
+                    </div>
+                    <ul class="tool-features">
+                        <li><span class="feature-icon">🧠</span> 智力维度对比</li>
+                        <li><span class="feature-icon">⚡</span> 执行力分析</li>
+                        <li><span class="feature-icon">🤝</span> 协作潜力评估</li>
+                        <li><span class="feature-icon">📈</span> 综合实力打分</li>
+                    </ul>
+                    <a href="intj-entj-comparison.html" class="tool-button">查看对比</a>
+                </div>
+
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <div class="tool-icon">💪</div>
+                        <div class="tool-title">
+                            <div class="tool-name">INTJ vs ENTJ 个人硬实力</div>
+                            <div class="tool-type">纯粹个人能力对比</div>
+                        </div>
+                    </div>
+                    <div class="tool-description">
+                        排除外部因素，纯粹比较INTJ和ENTJ的个人硬核能力，揭示真正的强者。
+                    </div>
+                    <ul class="tool-features">
+                        <li><span class="feature-icon">🎯</span> 纯个人能力对比</li>
+                        <li><span class="feature-icon">📊</span> 四维度详细分析</li>
+                        <li><span class="feature-icon">⚖️</span> 客观实力评估</li>
+                        <li><span class="feature-icon">🏆</span> 最终胜者判定</li>
+                    </ul>
+                    <a href="intj-entj-personal-hard-power.html" class="tool-button">查看对比</a>
+                </div>
+
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <div class="tool-icon">⚔️</div>
+                        <div class="tool-title">
+                            <div class="tool-name">INTJ vs ENTJ 硬实力对决</div>
+                            <div class="tool-type">全面实力比拼</div>
+                        </div>
+                    </div>
+                    <div class="tool-description">
+                        包含领导力在内的全面硬实力对比，适合商业和职场场景的能力评估。
+                    </div>
+                    <ul class="tool-features">
+                        <li><span class="feature-icon">👑</span> 领导力对比</li>
+                        <li><span class="feature-icon">⚡</span> 执行力评估</li>
+                        <li><span class="feature-icon">🧠</span> 智力维度分析</li>
+                        <li><span class="feature-icon">📊</span> 综合实力排名</li>
+                    </ul>
+                    <a href="intj-entj-hard-power-comparison.html" class="tool-button">查看对决</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // 添加一些交互效果
+        document.addEventListener('DOMContentLoaded', function() {
+            // 为工具卡片添加悬停效果
+            const cards = document.querySelectorAll('.tool-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-8px) scale(1.02)';
+                });
+
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+
+            // 为按钮添加点击效果
+            const buttons = document.querySelectorAll('.tool-button');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    // 创建涟漪效果
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+
+                    ripple.style.cssText = `
+                        position: absolute;
+                        width: ${size}px;
+                        height: ${size}px;
+                        border-radius: 50%;
+                        background: rgba(255,255,255,0.5);
+                        left: ${x}px;
+                        top: ${y}px;
+                        transform: scale(0);
+                        animation: ripple 0.6s ease-out;
+                        pointer-events: none;
+                    `;
+
+                    this.style.position = 'relative';
+                    this.style.overflow = 'hidden';
+                    this.appendChild(ripple);
+
+                    setTimeout(() => ripple.remove(), 600);
+                });
+            });
+        });
+
+        // 添加涟漪动画
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
