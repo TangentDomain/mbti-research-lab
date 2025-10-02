@@ -663,8 +663,8 @@
     </div>
 
     <script>
-        // 专业的MBTI测试题目库 - 使用6点量表
-        const questions = [
+        // 专业的MBTI测试题目库 - 使用6点量表，题目顺序随机化
+        const originalQuestions = [
             // E/I 维度题目 (12题)
             {
                 question: "我喜欢参加聚会和社交活动",
@@ -913,6 +913,19 @@
                 type: "positive"
             }
         ];
+
+        // 随机打乱题目顺序
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        // 获取随机化的题目顺序
+        const questions = shuffleArray(originalQuestions);
 
         // MBTI类型描述
         const typeDescriptions = {
