@@ -209,26 +209,7 @@
             font-weight: 600;
         }
 
-        /* 维度指示器 */
-        .dimension-indicator {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 0.8em;
-            font-weight: bold;
-            margin-left: 10px;
-            color: white;
-        }
-
-        .dimension-E { background: #FF6B6B; }
-        .dimension-I { background: #4ECDC4; }
-        .dimension-S { background: #45B7D1; }
-        .dimension-N { background: #96CEB4; }
-        .dimension-T { background: #FECA57; }
-        .dimension-F { background: #FF9FF3; }
-        .dimension-J { background: #A8E6CF; }
-        .dimension-P { background: #DDA0DD; }
-
+    
         /* 改进的问题样式 */
         .question-header {
             display: flex;
@@ -1124,7 +1105,6 @@
                 <div class="question-card active">
                     <div class="question-header">
                         <div class="question-number">问题 ${index + 1}</div>
-                        <div class="dimension-indicator dimension-${question.dimension}">${question.dimension}</div>
                     </div>
                     <div class="question-text">${question.question}</div>
                     <div class="likert-scale">
