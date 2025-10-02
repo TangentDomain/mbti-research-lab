@@ -1172,7 +1172,7 @@
                     nextQuestion();
                 } else {
                     // 如果是最后一题，显示结果
-                    calculateResults();
+                    showResults();
                 }
             }, 300); // 300ms延迟，让用户看到选择效果
         }
@@ -1234,7 +1234,14 @@
             const tf = scores.T >= scores.F ? 'T' : 'F';
             const jp = scores.J >= scores.P ? 'J' : 'P';
 
-            return ei + sn + tf + jp;
+            const resultType = ei + sn + tf + jp;
+
+            // 调试信息
+            console.log('MBTI测试分数:', scores);
+            console.log('测试结果类型:', resultType);
+            console.log('答题数量:', answers.length);
+
+            return resultType;
         }
 
         // 显示结果
@@ -1248,31 +1255,42 @@
                 const resultType = calculateResults();
                 const typeInfo = typeDescriptions[resultType];
 
+                // 调试信息
+                console.log('结果类型:', resultType);
+                console.log('类型信息:', typeInfo);
+
                 // 隐藏加载，显示结果
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('resultContainer').style.display = 'block';
 
-                // 显示结果
-                document.getElementById('resultType').textContent = resultType;
-                document.getElementById('resultDescription').textContent = typeInfo.description;
+                if (!typeInfo) {
+                    // 如果没有找到对应的类型信息，显示错误
+                    document.getElementById('resultType').textContent = resultType || '未知';
+                    document.getElementById('resultDescription').textContent = '抱歉，无法确定您的人格类型。请重新测试。';
+                    document.getElementById('resultDetails').innerHTML = '<p>可能出现的问题：答题数量不足或系统错误。</p>';
+                } else {
+                    // 显示结果
+                    document.getElementById('resultType').textContent = resultType;
+                    document.getElementById('resultDescription').textContent = typeInfo.description;
 
-                // 显示维度条
-                updateDimensionBars();
+                    // 显示维度条
+                    updateDimensionBars();
 
-                // 显示详细信息
-                const detailsHtml = `
-                    <h3>人格特征</h3>
-                    <p><strong>类型名称：</strong>${typeInfo.title}</p>
-                    <p><strong>核心特征：</strong>${typeInfo.description}</p>
+                    // 显示详细信息
+                    const detailsHtml = `
+                        <h3>人格特征</h3>
+                        <p><strong>类型名称：</strong>${typeInfo.title}</p>
+                        <p><strong>核心特征：</strong>${typeInfo.description}</p>
 
-                    <h3>优势与挑战</h3>
-                    <p><strong>优势：</strong>${typeInfo.details.strengths.join('、')}</p>
-                    <p><strong>挑战：</strong>${typeInfo.details.challenges.join('、')}</p>
+                        <h3>优势与挑战</h3>
+                        <p><strong>优势：</strong>${typeInfo.details.strengths.join('、')}</p>
+                        <p><strong>挑战：</strong>${typeInfo.details.challenges.join('、')}</p>
 
-                    <h3>适合职业</h3>
-                    <p>${typeInfo.details.careers.join('、')}</p>
-                `;
-                document.getElementById('resultDetails').innerHTML = detailsHtml;
+                        <h3>适合职业</h3>
+                        <p>${typeInfo.details.careers.join('、')}</p>
+                    `;
+                    document.getElementById('resultDetails').innerHTML = detailsHtml;
+                }
 
                 // 隐藏导航
                 document.getElementById('navigation').style.display = 'none';
@@ -1281,10 +1299,15 @@
 
         // 更新维度条
         function updateDimensionBars() {
-            const eiPercent = (scores.E / (scores.E + scores.I)) * 100;
-            const snPercent = (scores.S / (scores.S + scores.N)) * 100;
-            const tfPercent = (scores.T / (scores.T + scores.F)) * 100;
-            const jpPercent = (scores.J / (scores.J + scores.P)) * 100;
+            const eiTotal = scores.E + scores.I;
+            const snTotal = scores.S + scores.N;
+            const tfTotal = scores.T + scores.F;
+            const jpTotal = scores.J + scores.P;
+
+            const eiPercent = eiTotal > 0 ? (scores.E / eiTotal) * 100 : 50;
+            const snPercent = snTotal > 0 ? (scores.S / snTotal) * 100 : 50;
+            const tfPercent = tfTotal > 0 ? (scores.T / tfTotal) * 100 : 50;
+            const jpPercent = jpTotal > 0 ? (scores.J / jpTotal) * 100 : 50;
 
             document.getElementById('eiBar').style.width = eiPercent + '%';
             document.getElementById('snBar').style.width = snPercent + '%';
