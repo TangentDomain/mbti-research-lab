@@ -1,0 +1,56 @@
+# GitHub Pages 配置文件
+title: MBTI 研究实验室
+description: 探索16种人格类型的能力、特点与差异
+url: https://tangentdomain.github.io/mbti-research-lab
+baseurl: /mbti-research-lab
+
+# 网站元信息
+author: TangentDomain
+lang: zh-CN
+timezone: Asia/Shanghai
+
+# 构建设置
+markdown: kramdown
+highlighter: rouge
+theme: minima
+
+# 插件
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# 排除文件
+exclude:
+  - .claude/
+  - .git/
+  - .github/
+  - Gemfile
+  - Gemfile.lock
+  - node_modules/
+  - vendor/
+  - README.md
+  - type-distribution.py
+
+# 包含文件
+include:
+  - _pages/
+
+# 压缩设置
+compress_html:
+  clippings: all
+  comments: all
+  endings: all
+  startings: []
+  blanklines: false
+  profile: false
+
+# SEO 设置
+twitter:
+  username: tangentdomain
+  card: summary
+
+social:
+  name: TangentDomain
+  links:
+    - https://github.com/TangentDomain
