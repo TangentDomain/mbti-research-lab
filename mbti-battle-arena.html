@@ -537,6 +537,7 @@
         @media (max-width: 1024px) {
             .arena-container {
                 grid-template-columns: 1fr;
+                gap: 1.5rem;
             }
 
             .battle-stage {
@@ -553,6 +554,14 @@
                 gap: 0.5rem;
                 padding: 0.6rem;
             }
+
+            .fighter-selector {
+                padding: 1rem;
+            }
+
+            .fighter-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
         }
 
         @media (max-width: 768px) {
@@ -562,14 +571,181 @@
 
             h1 {
                 font-size: 2rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .arena-container {
+                gap: 1rem;
+            }
+
+            .fighter-selector {
+                padding: 1rem;
+            }
+
+            .selector-title {
+                font-size: 1.1rem;
+                margin-bottom: 0.8rem;
             }
 
             .fighter-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.4rem;
+            }
+
+            .fighter-btn {
+                padding: 0.6rem;
+                font-size: 0.8rem;
+            }
+
+            .battle-arena {
+                padding: 1.5rem;
+            }
+
+            .battle-stage {
+                gap: 1.5rem;
+            }
+
+            .fighter-card {
+                padding: 1.5rem;
+            }
+
+            .fighter-type {
+                font-size: 2.5rem;
+            }
+
+            .fighter-name {
+                font-size: 1rem;
+            }
+
+            .fighter-score {
+                font-size: 2rem;
+            }
+
+            .vs-indicator {
+                font-size: 1.8rem;
+            }
+
+            .battle-controls {
+                margin-top: 1.5rem;
+            }
+
+            .battle-btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 1rem;
+            }
+
+            .radar-section {
+                padding: 1rem;
+                margin-top: 1rem;
+            }
+
+            .radar-title {
+                font-size: 1rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .radar-chart {
+                height: 250px;
+            }
+
+            .ability-row {
+                grid-template-columns: 30px 1fr 30px 1fr 30px;
+                gap: 0.3rem;
+                padding: 0.5rem;
+                font-size: 0.8rem;
+            }
+
+            .ability-score {
+                font-size: 0.8rem;
             }
 
             .stats-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .stat-card {
+                padding: 1rem;
+            }
+
+            .stat-name {
+                font-size: 1rem;
+            }
+
+            .stat-score {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .subtitle {
+                font-size: 0.9rem;
+            }
+
+            .fighter-grid {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .fighter-btn {
+                padding: 0.8rem;
+                font-size: 0.9rem;
+            }
+
+            .battle-arena {
+                padding: 1rem;
+            }
+
+            .fighter-card {
+                padding: 1rem;
+            }
+
+            .fighter-type {
+                font-size: 2rem;
+            }
+
+            .fighter-score {
+                font-size: 1.8rem;
+            }
+
+            .vs-indicator {
+                font-size: 1.5rem;
+            }
+
+            .battle-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .radar-chart {
+                height: 200px;
+            }
+
+            .ability-row {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+                padding: 0.8rem;
+            }
+
+            .ability-label {
+                text-align: center;
+                margin-bottom: 0.3rem;
+            }
+
+            .ability-bar-container {
+                height: 10px;
+            }
+
+            .ability-score {
+                text-align: center;
+                margin-top: 0.3rem;
             }
         }
     </style>

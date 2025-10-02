@@ -378,10 +378,12 @@
         @media (max-width: 1024px) {
             .main-content {
                 grid-template-columns: 1fr;
+                gap: 1.5rem;
             }
 
             .sidebar {
                 position: static;
+                margin-bottom: 1.5rem;
             }
 
             .rank-card {
@@ -401,14 +403,211 @@
 
             h1 {
                 font-size: 2rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .sidebar {
+                padding: 1rem;
+            }
+
+            .filter-section {
+                margin-bottom: 1rem;
+            }
+
+            .filter-title {
+                font-size: 0.9rem;
+            }
+
+            .filter-buttons {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .filter-btn {
+                padding: 0.6rem;
+                font-size: 0.8rem;
+            }
+
+            .ranking-container {
+                padding: 1rem;
+            }
+
+            .rank-card {
+                grid-template-columns: 50px 1fr 80px;
+                padding: 1rem;
+                gap: 0.8rem;
+            }
+
+            .rank-number {
+                font-size: 1.5rem;
+                width: 50px;
+                height: 50px;
+            }
+
+            .rank-info h3 {
+                font-size: 1.1rem;
+                margin-bottom: 0.3rem;
+            }
+
+            .rank-type {
+                font-size: 0.8rem;
+            }
+
+            .rank-score {
+                font-size: 1.8rem;
+            }
+
+            .rank-desc {
+                font-size: 0.8rem;
+                margin-top: 0.3rem;
+            }
+
+            .abilities-display {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.5rem;
+            }
+
+            .ability-item {
+                padding: 0.5rem;
+                border-radius: 8px;
+            }
+
+            .ability-name {
+                font-size: 0.7rem;
+            }
+
+            .ability-bar {
+                height: 6px;
+                margin: 0.3rem 0;
+            }
+
+            .ability-value {
+                font-size: 0.7rem;
             }
 
             .legend {
                 grid-template-columns: repeat(2, 1fr);
+                gap: 0.8rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .legend-item {
+                padding: 0.6rem;
+                font-size: 0.8rem;
             }
 
             .analysis-grid {
                 grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .analysis-card {
+                padding: 1rem;
+            }
+
+            .analysis-card-title {
+                font-size: 1rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .analysis-content {
+                font-size: 0.9rem;
+                line-height: 1.4;
+            }
+
+            .section-title {
+                font-size: 1.2rem;
+                margin-bottom: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .subtitle {
+                font-size: 0.9rem;
+            }
+
+            .sidebar {
+                padding: 0.8rem;
+            }
+
+            .filter-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-btn {
+                padding: 0.5rem;
+                font-size: 0.75rem;
+            }
+
+            .ranking-container {
+                padding: 0.8rem;
+            }
+
+            .rank-card {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 0.5rem;
+                padding: 0.8rem;
+            }
+
+            .rank-number {
+                font-size: 1.3rem;
+                width: 40px;
+                height: 40px;
+                margin: 0 auto;
+            }
+
+            .rank-score {
+                font-size: 1.5rem;
+                margin: 0.3rem 0;
+            }
+
+            .abilities-display {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .ability-item {
+                padding: 0.6rem;
+            }
+
+            .ability-name {
+                font-size: 0.8rem;
+            }
+
+            .ability-bar {
+                height: 8px;
+            }
+
+            .ability-value {
+                font-size: 0.8rem;
+            }
+
+            .legend {
+                grid-template-columns: 1fr;
+            }
+
+            .analysis-card {
+                padding: 0.8rem;
+            }
+
+            .analysis-card-title {
+                font-size: 0.9rem;
+            }
+
+            .analysis-content {
+                font-size: 0.85rem;
+            }
+
+            .section-title {
+                font-size: 1.1rem;
             }
         }
     </style>
