@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INTJ vs ISTJ 深度对比分析</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --intj-color: #667eea;
+            --istj-color: #f59e0b;
+            --text-dark: #2d3748;
+            --text-light: #718096;
+            --bg-light: #f7fafc;
+            --bg-white: #ffffff;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+            --shadow-xl: 0 20px 25px rgba(0,0,0,0.1);
+            --border-radius: 16px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--text-dark);
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.03"><path d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/></g></g></svg>') repeat;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: white;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .personality-card {
+            background: var(--bg-white);
+            border-radius: var(--border-radius);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-xl);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .personality-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+        }
+
+        .intj-card::before {
+            background: linear-gradient(90deg, var(--intj-color), #764ba2);
+        }
+
+        .istj-card::before {
+            background: linear-gradient(90deg, var(--istj-color), #dc2626);
+        }
+
+        .personality-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .personality-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 700;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .intj-card .personality-icon {
+            background: linear-gradient(135deg, var(--intj-color), #764ba2);
+        }
+
+        .istj-card .personality-icon {
+            background: linear-gradient(135deg, var(--istj-color), #dc2626);
+        }
+
+        .personality-info h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .personality-subtitle {
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        .intj-card .personality-info h2 {
+            color: var(--intj-color);
+        }
+
+        .istj-card .personality-info h2 {
+            color: var(--istj-color);
+        }
+
+        .traits-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .traits-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .trait-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .trait-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .intj-card .trait-icon {
+            background: var(--intj-color);
+        }
+
+        .istj-card .trait-icon {
+            background: var(--istj-color);
+        }
+
+        .trait-text {
+            flex: 1;
+            line-height: 1.5;
+            color: var(--text-dark);
+        }
+
+        .comparison-section {
+            background: var(--bg-white);
+            border-radius: var(--border-radius);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-xl);
+            margin-bottom: 2rem;
+        }
+
+        .comparison-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: var(--text-dark);
+        }
+
+        .radar-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .radar-container {
+            position: relative;
+            height: 350px;
+        }
+
+        .dimensions-comparison {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .dimension-row {
+            background: var(--bg-light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 120px 1fr 200px 100px;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .dimension-name {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .dimension-bars {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .bar-container {
+            flex: 1;
+            height: 12px;
+            background: #e2e8f0;
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .intj-bar {
+            background: linear-gradient(90deg, var(--intj-color), #764ba2);
+        }
+
+        .istj-bar {
+            background: linear-gradient(90deg, var(--istj-color), #dc2626);
+        }
+
+        .dimension-scores {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .score-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .intj-score {
+            background: rgba(102, 126, 234, 0.1);
+            color: var(--intj-color);
+        }
+
+        .istj-score {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--istj-color);
+        }
+
+        .key-differences {
+            background: var(--bg-white);
+            border-radius: var(--border-radius);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .differences-grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .difference-item {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .difference-aspect {
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid;
+        }
+
+        .intj-aspect {
+            background: rgba(102, 126, 234, 0.05);
+            border-left-color: var(--intj-color);
+        }
+
+        .istj-aspect {
+            background: rgba(245, 158, 11, 0.05);
+            border-left-color: var(--istj-color);
+        }
+
+        .aspect-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .intj-aspect .aspect-title {
+            color: var(--intj-color);
+        }
+
+        .istj-aspect .aspect-title {
+            color: var(--istj-color);
+        }
+
+        .aspect-description {
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .compatibility-section {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(245, 158, 11, 0.1));
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .compatibility-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .compatibility-score {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--intj-color), var(--istj-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .compatibility-description {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        @media (max-width: 1024px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .radar-comparison {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .dimension-row {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+
+            .difference-item {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .personality-card {
+                padding: 1.5rem;
+            }
+
+            .personality-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+
+            .personality-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+
+            .personality-info h2 {
+                font-size: 1.5rem;
+            }
+
+            .personality-subtitle {
+                font-size: 0.9rem;
+            }
+
+            .section-title {
+                font-size: 1rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .traits-list {
+                gap: 0.5rem;
+            }
+
+            .trait-item {
+                gap: 0.5rem;
+            }
+
+            .trait-icon {
+                width: 20px;
+                height: 20px;
+                font-size: 0.7rem;
+            }
+
+            .trait-text {
+                font-size: 0.9rem;
+                line-height: 1.4;
+            }
+
+            .comparison-section {
+                padding: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .comparison-title {
+                font-size: 1.3rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .radar-container {
+                height: 280px;
+            }
+
+            .dimensions-comparison {
+                gap: 1rem;
+            }
+
+            .dimension-row {
+                padding: 1rem;
+                border-radius: 10px;
+            }
+
+            .dimension-name {
+                font-size: 0.9rem;
+                margin-bottom: 0.5rem;
+                text-align: center;
+            }
+
+            .dimension-bars {
+                margin-bottom: 0.5rem;
+            }
+
+            .bar-container {
+                height: 10px;
+            }
+
+            .dimension-scores {
+                justify-content: center;
+                gap: 1rem;
+                font-size: 0.8rem;
+            }
+
+            .score-badge {
+                padding: 0.2rem 0.6rem;
+                font-size: 0.8rem;
+            }
+
+            .key-differences {
+                padding: 1.5rem;
+            }
+
+            .differences-grid {
+                gap: 1.5rem;
+            }
+
+            .difference-aspect {
+                padding: 1rem;
+                border-radius: 10px;
+            }
+
+            .aspect-title {
+                font-size: 1rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .aspect-description {
+                font-size: 0.9rem;
+                line-height: 1.5;
+            }
+
+            .compatibility-section {
+                padding: 1.5rem;
+                margin-top: 1.5rem;
+            }
+
+            .compatibility-title {
+                font-size: 1.1rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .compatibility-score {
+                font-size: 2rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .compatibility-description {
+                font-size: 0.9rem;
+                line-height: 1.5;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .subtitle {
+                font-size: 0.9rem;
+            }
+
+            .personality-card {
+                padding: 1rem;
+            }
+
+            .personality-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+
+            .personality-info h2 {
+                font-size: 1.3rem;
+            }
+
+            .comparison-section {
+                padding: 1rem;
+            }
+
+            .comparison-title {
+                font-size: 1.2rem;
+            }
+
+            .radar-container {
+                height: 250px;
+            }
+
+            .dimension-row {
+                padding: 0.8rem;
+            }
+
+            .bar-container {
+                height: 8px;
+            }
+
+            .key-differences {
+                padding: 1rem;
+            }
+
+            .difference-aspect {
+                padding: 0.8rem;
+            }
+
+            .aspect-description {
+                font-size: 0.85rem;
+            }
+
+            .compatibility-section {
+                padding: 1rem;
+            }
+
+            .compatibility-title {
+                font-size: 1rem;
+            }
+
+            .compatibility-score {
+                font-size: 1.8rem;
+            }
+
+            .compatibility-description {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>INTJ vs ISTJ 深度对比分析</h1>
+            <p class="subtitle">探索建筑师与物流师的核心差异与互补优势</p>
+        </header>
+
+        <div class="comparison-grid">
+            <div class="personality-card intj-card">
+                <div class="personality-header">
+                    <div class="personality-icon">INTJ</div>
+                    <div class="personality-info">
+                        <h2>建筑师</h2>
+                        <p class="personality-subtitle">内向 • 直觉 • 思考 • 判断</p>
+                    </div>
+                </div>
+
+                <div class="traits-section">
+                    <h3 class="section-title">核心特征</h3>
+                    <div class="traits-list">
+                        <div class="trait-item">
+                            <div class="trait-icon">🧠</div>
+                            <div class="trait-text">
+                                <strong>战略思维</strong> - 善于制定长远规划和系统性思考
+                            </div>
+                        </div>
+                        <div class="trait-item">
+                            <div class="trait-icon">🎯</div>
+                            <div class="trait-text">
+                                <strong>创新导向</strong> - 追求突破常规，寻找新的解决方案
+                            </div>
+                        </div>
+                        <div class="trait-item">
+                            <div class="trait-icon">💡</div>
+                            <div class="trait-text">
+                                <strong>独立思考</strong> - 依靠自己的判断，不轻易受他人影响
+                            </div>
+                        </div>
+                        <div class="trait-item">
+                            <div class="trait-icon">📊</div>
+                            <div class="trait-text">
+                                <strong>完美主义</strong> - 追求高质量，注重细节和精度
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="traits-section">
+                    <h3 class="section-title">工作风格</h3>
+                    <div class="traits-list">
+                        <div class="trait-item">
+                            <div class="trait-icon">🔍</div>
+                            <div class="trait-text">
+                                偏好独立工作，需要安静专注的环境
+                            </div>
+                        </div>
+                        <div class="trait-item">
+                            <div class="trait-icon">📝</div>
+                            <div class="trait-text">
+                                重视规划和准备，行动前充分思考
+                            </div>
+                        </div>
+                        <div class="trait-item">
+                            <div class="trait-icon">🎓</div>
+                            <div class="trait-text">
+                                持续学习，不断更新知识体系
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="personality-card istj-card">
+                <div class="personality-header">
+                    <div class="personality-icon">ISTJ</div>
+                    <div class="personality-info">
+                        <h2>物流师</h2>
+                        <p class="personality-subtitle">内向 • 感觉 • 思考 • 判断</p>
+                    </div>
+                </div>
+
+                <div class="traits-section">
+                    <h3 class="section-title">核心特征</h3>
+                    <div class="traits-list">
+                        <div class="trait-item">
+                            <div class="trait-icon">📋</div>
+                            <div class="trait-text">
+                                <strong>务实可靠</strong> - 注重实际，值得信赖和依靠
+                            </div>
+                        </div>
+                        <div class="trait-item">
+                            <div class="trait-icon">🏛️</div>
+                            <div class="trait-text">
+                                <strong>传统导向</strong> - 尊重规则、制度和既定流程
+                            </div>
+                        </div>
+                        <div class="trait-item">
+                            <div class="trait-icon">🎯</div>
+                            <div class="trait-text">
+                                <strong>目标明确</strong> - 专注完成具体任务，追求结果
+                            </div>
+                        </div>
+                        <div class="trait-item">
+                            <div class="trait-icon">📚</div>
+                            <div class="trait-text">
+                                <strong>细节导向</strong> - 重视事实和数据，注重准确性
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="traits-section">
+                    <h3 class="section-title">工作风格</h3>
+                    <div class="traits-list">
+                        <div class="trait-item">
+                            <div class="trait-icon">⚙️</div>
+                            <div class="trait-text">
+                                喜欢有组织的工作环境，遵循既定流程
+                            </div>
+                        </div>
+                        <div class="trait-item">
+                            <div class="trait-icon">📈</div>
+                            <div class="trait-text">
+                                稳步推进，一次专注一个任务直到完成
+                            </div>
+                        </div>
+                        <div class="trait-item">
+                            <div class="trait-icon">🛡️</div>
+                            <div class="trait-text">
+                                维护稳定，在变化中寻找秩序
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="comparison-section">
+            <h2 class="comparison-title">能力维度对比</h2>
+
+            <div class="radar-comparison">
+                <div class="radar-container">
+                    <canvas id="intjRadar"></canvas>
+                </div>
+                <div class="radar-container">
+                    <canvas id="istjRadar"></canvas>
+                </div>
+            </div>
+
+            <div class="dimensions-comparison">
+                <div class="dimension-row">
+                    <div class="dimension-name">创新思维</div>
+                    <div class="dimension-bars">
+                        <div class="bar-container">
+                            <div class="bar-fill intj-bar" style="width: 96%;"></div>
+                        </div>
+                        <div class="bar-container">
+                            <div class="bar-fill istj-bar" style="width: 65%;"></div>
+                        </div>
+                    </div>
+                    <div class="dimension-scores">
+                        <span class="score-badge intj-score">INTJ: 96</span>
+                        <span class="score-badge istj-score">ISTJ: 65</span>
+                    </div>
+                </div>
+
+                <div class="dimension-row">
+                    <div class="dimension-name">执行力</div>
+                    <div class="dimension-bars">
+                        <div class="bar-container">
+                            <div class="bar-fill intj-bar" style="width: 75%;"></div>
+                        </div>
+                        <div class="bar-container">
+                            <div class="bar-fill istj-bar" style="width: 92%;"></div>
+                        </div>
+                    </div>
+                    <div class="dimension-scores">
+                        <span class="score-badge intj-score">INTJ: 75</span>
+                        <span class="score-badge istj-score">ISTJ: 92</span>
+                    </div>
+                </div>
+
+                <div class="dimension-row">
+                    <div class="dimension-name">分析深度</div>
+                    <div class="dimension-bars">
+                        <div class="bar-container">
+                            <div class="bar-fill intj-bar" style="width: 95%;"></div>
+                        </div>
+                        <div class="bar-container">
+                            <div class="bar-fill istj-bar" style="width: 85%;"></div>
+                        </div>
+                    </div>
+                    <div class="dimension-scores">
+                        <span class="score-badge intj-score">INTJ: 95</span>
+                        <span class="score-badge istj-score">ISTJ: 85</span>
+                    </div>
+                </div>
+
+                <div class="dimension-row">
+                    <div class="dimension-name">可靠性</div>
+                    <div class="dimension-bars">
+                        <div class="bar-container">
+                            <div class="bar-fill intj-bar" style="width: 82%;"></div>
+                        </div>
+                        <div class="bar-container">
+                            <div class="bar-fill istj-bar" style="width: 98%;"></div>
+                        </div>
+                    </div>
+                    <div class="dimension-scores">
+                        <span class="score-badge intj-score">INTJ: 82</span>
+                        <span class="score-badge istj-score">ISTJ: 98</span>
+                    </div>
+                </div>
+
+                <div class="dimension-row">
+                    <div class="dimension-name">组织能力</div>
+                    <div class="dimension-bars">
+                        <div class="bar-container">
+                            <div class="bar-fill intj-bar" style="width: 88%;"></div>
+                        </div>
+                        <div class="bar-container">
+                            <div class="bar-fill istj-bar" style="width: 95%;"></div>
+                        </div>
+                    </div>
+                    <div class="dimension-scores">
+                        <span class="score-badge intj-score">INTJ: 88</span>
+                        <span class="score-badge istj-score">ISTJ: 95</span>
+                    </div>
+                </div>
+
+                <div class="dimension-row">
+                    <div class="dimension-name">适应性</div>
+                    <div class="dimension-bars">
+                        <div class="bar-container">
+                            <div class="bar-fill intj-bar" style="width: 70%;"></div>
+                        </div>
+                        <div class="bar-container">
+                            <div class="bar-fill istj-bar" style="width: 72%;"></div>
+                        </div>
+                    </div>
+                    <div class="dimension-scores">
+                        <span class="score-badge intj-score">INTJ: 70</span>
+                        <span class="score-badge istj-score">ISTJ: 72</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="key-differences">
+            <h2 class="comparison-title">核心差异分析</h2>
+
+            <div class="differences-grid">
+                <div class="difference-item">
+                    <div class="difference-aspect intj-aspect">
+                        <div class="aspect-title">信息处理方式</div>
+                        <div class="aspect-description">
+                            INTJ依赖直觉(N)，关注可能性、模式和未来趋势。他们善于从复杂信息中发现潜在机会，喜欢抽象思考和概念性工作。面对问题时，更倾向于思考"可能是什么"而不是"现实是什么"。
+                        </div>
+                    </div>
+                    <div class="difference-aspect istj-aspect">
+                        <div class="aspect-title">信息处理方式</div>
+                        <div class="aspect-description">
+                            ISTJ依赖感觉(S)，关注具体事实、细节和过往经验。他们擅长收集和组织实际信息，基于可验证的数据做决策。面对问题时，更倾向于思考"实际上是什么"而不是"可能是什么"。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="difference-item">
+                    <div class="difference-aspect intj-aspect">
+                        <div class="aspect-title">决策风格</div>
+                        <div class="aspect-description">
+                            INTJ的决策更加前瞻性和战略性。他们会考虑多种可能性，选择最优的长期方案。虽然也重视逻辑分析，但更愿意为创新想法承担经过计算的风险。
+                        </div>
+                    </div>
+                    <div class="difference-aspect istj-aspect">
+                        <div class="aspect-title">决策风格</div>
+                        <div class="aspect-description">
+                            ISTJ的决策更加保守和实用。他们会依赖过去的成功经验，选择经过验证的可靠方法。重视稳定性和可预测性，倾向于避免不必要的风险。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="difference-item">
+                    <div class="difference-aspect intj-aspect">
+                        <div class="aspect-title">工作偏好</div>
+                        <div class="aspect-description">
+                            INTJ喜欢处理复杂问题、制定战略规划、探索新概念。他们在需要创新思维和长远规划的环境中表现出色，对重复性和细节性工作容易感到厌倦。
+                        </div>
+                    </div>
+                    <div class="difference-aspect istj-aspect">
+                        <div class="aspect-title">工作偏好</div>
+                        <div class="aspect-description">
+                            ISTJ喜欢结构化的任务、维护系统、确保质量标准。他们在需要精确执行和持续维护的环境中表现出色，对过于抽象和不确定的工作感到不适。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="difference-item">
+                    <div class="difference-aspect intj-aspect">
+                        <div class="aspect-title">变化态度</div>
+                        <div class="aspect-description">
+                            INTJ对变化持开放态度，特别是当他们看到变化能带来改进和创新时。他们愿意推翻现有体系来创造更好的方案，但需要时间来适应新的现实。
+                        </div>
+                    </div>
+                    <div class="difference-aspect istj-aspect">
+                        <div class="aspect-title">变化态度</div>
+                        <div class="aspect-description">
+                            ISTJ对变化持谨慎态度，偏好稳定和可预测的环境。他们需要充分的时间来适应变化，重视渐进式改进而非革命性变革。一旦接受变化，会严格执行新的流程。
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="compatibility-section">
+                <h3 class="compatibility-title">协作优势与互补性</h3>
+                <div class="compatibility-score">互补协作</div>
+                <p class="compatibility-description">
+                    <strong>INTJ的独特优势</strong>：创新思维(96分)、分析深度(95分)、组织能力(88分)<br>
+                    <strong>ISTJ的独特优势</strong>：可靠性(98分)、执行力(92分)、组织能力(95分)<br><br>
+
+                    这两种类型形成了<strong>完美的战略-执行组合</strong>：
+                    <br><br>
+                    🏗️ <strong>INTJ</strong>：负责战略规划、创新设计、系统架构<br>
+                    ⚙️ <strong>ISTJ</strong>：负责执行落地、流程优化、质量保证<br><br>
+
+                    在项目管理、企业运营、产品开发中，INTJ+ISTJ的组合能够：
+                    <br>
+                    • 将创新理念转化为可执行计划<br>
+                    • 平衡前瞻性思维与实用性执行<br>
+                    • 确保既符合战略方向又具备可操作性<br>
+                    • 在创新与稳定之间找到最佳平衡点
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // 初始化雷达图
+        function initializeRadarCharts() {
+            const intjCtx = document.getElementById('intjRadar').getContext('2d');
+            const istjCtx = document.getElementById('istjRadar').getContext('2d');
+
+            const radarOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            stepSize: 20,
+                            font: {
+                                size: 11
+                            },
+                            color: '#718096'
+                        },
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        },
+                        pointLabels: {
+                            font: {
+                                size: 12,
+                                weight: '500'
+                            },
+                            color: '#2d3748'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleFont: {
+                            size: 14,
+                            weight: '600'
+                        },
+                        bodyFont: {
+                            size: 13
+                        },
+                        padding: 12,
+                        cornerRadius: 8,
+                        displayColors: false,
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.parsed.r + ' 分';
+                            }
+                        }
+                    }
+                }
+            };
+
+            // INTJ 雷达图
+            new Chart(intjCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['创新思维', '执行力', '分析深度', '可靠性', '组织能力', '适应性'],
+                    datasets: [{
+                        label: 'INTJ',
+                        data: [96, 75, 95, 82, 88, 70],
+                        backgroundColor: 'rgba(102, 126, 234, 0.2)',
+                        borderColor: 'rgb(102, 126, 234)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgb(102, 126, 234)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(102, 126, 234)',
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: radarOptions
+            });
+
+            // ISTJ 雷达图
+            new Chart(istjCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['创新思维', '执行力', '分析深度', '可靠性', '组织能力', '适应性'],
+                    datasets: [{
+                        label: 'ISTJ',
+                        data: [65, 92, 85, 98, 95, 72],
+                        backgroundColor: 'rgba(245, 158, 11, 0.2)',
+                        borderColor: 'rgb(245, 158, 11)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgb(245, 158, 11)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(245, 158, 11)',
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: radarOptions
+            });
+        }
+
+        // 动画效果
+        function animateBars() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const bars = entry.target.querySelectorAll('.bar-fill');
+                        bars.forEach(bar => {
+                            const width = bar.style.width;
+                            bar.style.width = '0%';
+                            setTimeout(() => {
+                                bar.style.width = width;
+                            }, 100);
+                        });
+                    }
+                });
+            });
+
+            const dimensionsSection = document.querySelector('.dimensions-comparison');
+            if (dimensionsSection) {
+                observer.observe(dimensionsSection);
+            }
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeRadarCharts();
+            animateBars();
+        });
+    </script>
+</body>
+</html>
